@@ -1,0 +1,87 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Search Category - jQuery EasyUI Demo</title>
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+        <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+        <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    </head>
+    <body>
+        <h2>Search Category</h2>
+        <p>Select a category and click search button or press enter key in input box to do searching.</p>
+        <div style="margin:20px 0;"></div>
+        <div class="easyui-panel" style="width:100%;max-width:1200px;padding:5px 10px;">
+            <input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:600px">
+
+        <div id="mm">
+            <div data-options="name:'dwbm',iconCls:'icon-ok'">单位编码</div>
+            <div data-options="name:'dwfl'">单位分类</div>
+            <div data-options="name:'dwxz'">单位性质</div>
+        </div>
+
+        <table id="tt" class="easyui-datagrid" style="width:1150px;height:550px"
+		url="/query_zjmx" title="Load Data" iconCls="icon-save"
+		rownumbers="true" pagination="true">
+	<thead>
+		<tr>
+	      <th field="id" type="hidden" align="center">ID</th>	
+      <th field="dwbm" width="80" align="center">单位编码</th>
+		<th field="zjq" width="80" align="center">征集期</th>
+			<th field="dyyzrs" width="80" align="center">征集人数</th>
+			<th field="dwjs" width="110" align="center">单位基数</th>
+			<th field="grjs" width="60" align="center">个人基数</th>
+			<th field="dwdy" width="100" align="center">单位缴纳</th>
+			<th field="grdy" width="80" align="center">个人缴纳</th>
+			<th field="dwbz" width="80" align="center">单位补征</th>
+      <th field="grbz" width="88" align="center">个人补征</th>
+	  <th field="dwsz" width="80" align="center">单位实征</th>
+	  <th field="grsz" width="80" align="center">个人实征</th>
+	  <th field="dzsj" width="80" align="center">到账时间</th>
+
+		</tr>
+	</thead>
+</table>
+<div id="tab-prn"></div>
+
+
+        <script>
+        $(function(){
+			$("#tt").datagrid('hideColumn', 'id');
+			$("#tt").datagrid({
+			onClickRow: function (rowIndex, rowData) {//双击的逻辑和单机的那个差不多  
+                  var row = $("#tt").datagrid("getSelected");  
+                  if (row){
+                       var id = row.id;
+                       var m_dwbm = row.dwbm;
+                       var m_zjq = row.zjq;
+                       //alert('Item ID:'+row.id);
+                       var url_q = '/table' + '/' + id;
+                       var m_title = '打印表格: '+m_dwbm+' '+m_zjq;
+                       $('#tt').datagrid('clearSelections');
+                       //alert('URL_QUERY: '+url_q);
+                       
+                       top.window.addtab(m_title,url_q);
+                       //var b = window.top!=window.self;
+					//document.write( "当前窗口是否在一个框架中："+b );
+                  }
+        },
+        });
+        
+        }
+        );
+        
+	
+            function doSearch(value,name){
+
+		    $('#tt').datagrid('load',{
+		"key" : name,
+		"val": value
+	});
+
+	    }
+        </script>
+    </body>
+    </html>

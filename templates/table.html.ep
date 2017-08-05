@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style type="text/css" media="print">
+
+		@page{
+			size: A4 landscape;
+
+
+		}
+	</style>
+	<script
+			  src="https://code.jquery.com/jquery-1.9.1.min.js"
+			  integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="
+			  crossorigin="anonymous"></script>
+			  <!--<script type="text/JavaScript" src="printThis-master/printThis.js" ></script>
+			  -->
+<script type="text/JavaScript" src="../Jqprint/jQuery.print.js" ></script>
+
+</head>
+<body>
+	<div style="hidden"><% my $hj = $dwdy + $grdy; %></div>
+<div id="tab_content">
+<table cellspacing="0" border="0" width="98%">
+	<colgroup width="145"></colgroup>
+	<colgroup width="220"></colgroup>
+	<colgroup width="205"></colgroup>
+	<colgroup width="126"></colgroup>
+	<colgroup width="89"></colgroup>
+	<colgroup width="154"></colgroup>
+	<colgroup width="128"></colgroup>
+	<colgroup width="141"></colgroup>
+	<colgroup span="2" width="75"></colgroup>
+	<tr>
+		<td rowspan=16 ></td>
+		<td colspan=7 height="50" align="center" valign=middle><b><font size=5>河南油田社会保险征集通知单</font></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td colspan=2 height="26" align="left" >单位:局社会保险中心</td>
+		<td align="left" valign=middle><br></td>
+		<td align="left" valign=middle><br></td>
+		<td align="left" valign=middle><br></td>
+
+		<td colspan=2 align="right" valign=middle>单位:元</td>
+		<td align="left" valign=middle><br></td>
+		<td align="left" valign=middle><br></td>
+
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位编号</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle><b><span id="dwbm" ><%=  $dwbm %></span></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位名称</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b><span id="dwmc"></span></b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>缴费月份</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="201707" sdnum="2052;"><b><%=  $zjq %></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>缴费金额</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="532337.94" sdnum="2052;0;#,##0.00"><b><%= $hj %></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位缴费比例</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="0.19" sdnum="2052;0;0.00%"><b>19.00%</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴费比例</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="0.08" sdnum="2052;0;0.00%"><b>8.00%</b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="41" align="center" valign=middle><b>款项内容</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位基数</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人基数</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>在职人数</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位缴纳</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴纳</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>小计</b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>养老保险</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $dwjs %></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $grjs %></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="590" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $dyyzrs %> </font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="374608.18" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><%=  $dwdy %></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="157729.76" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><%=  $grdy %></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="532337.94" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id= "hj"><%= $hj %></span></font></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td align="left"><br></td>
+		<td colspan=2 align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>合计（大写）</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle sdnum="2052;2052;[DBNum2][$-804]General"><b><span id="cnum" >伍拾叁万贰千叁佰叁拾柒圆玖角肆分</span></b></td>
+		<td align="left"><br></td>
+		<td colspan=2 align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>备注：</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle><b>无</b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td colspan=7 height="25" align="left"><b>单位全称：河南省南阳油田社会保险管理局    帐号：1714028509049088885     开户行：工行油支</b></td>
+		<td align="left"><br></td>
+		<td  align="left"><br></td>
+
+	</tr>
+</table>
+</div>
+<input id="btnPrint" type="button" value="打印征集单"></input>
+<script>
+
+
+	$("#btnPrint").click(function(){
+			$("#tab_content").print({
+				globalStyles: true,
+				mediaPrint: true,
+				stylesheet: null,
+				noPrintSelector: ".no-print",
+				iframe: true,
+				append: null,
+				prepend: null,
+				manuallyCopyFormValues: true,
+				deferred: $.Deferred(),
+				timeout: 750,
+				title: null,
+				doctype: '<!doctype html>',
+			});
+			/*$("#tab_content").printThis();*/
+	});
+
+
+function convertCurrency(money) {
+  //汉字的数字
+  var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+  //基本单位
+  var cnIntRadice = new Array('', '拾', '佰', '仟');
+  //对应整数部分扩展单位
+  var cnIntUnits = new Array('', '万', '亿', '兆');
+  //对应小数部分单位
+  var cnDecUnits = new Array('角', '分', '毫', '厘');
+  //整数金额时后面跟的字符
+  var cnInteger = '整';
+  //整型完以后的单位
+  var cnIntLast = '元';
+  //最大处理的数字
+  var maxNum = 999999999999999.9999;
+  //金额整数部分
+  var integerNum;
+  //金额小数部分
+  var decimalNum;
+  //输出的中文金额字符串
+  var chineseStr = '';
+  //分离金额后用的数组，预定义
+  var parts;
+  if (money == '') { return ''; }
+  money = parseFloat(money);
+  if (money >= maxNum) {
+    //超出最大处理数字
+    return '';
+  }
+  if (money == 0) {
+    chineseStr = cnNums[0] + cnIntLast + cnInteger;
+    return chineseStr;
+  }
+  //转换为字符串
+  money = money.toString();
+  if (money.indexOf('.') == -1) {
+    integerNum = money;
+    decimalNum = '';
+  } else {
+    parts = money.split('.');
+    integerNum = parts[0];
+    decimalNum = parts[1].substr(0, 4);
+  }
+  //获取整型部分转换
+  if (parseInt(integerNum, 10) > 0) {
+    var zeroCount = 0;
+    var IntLen = integerNum.length;
+    for (var i = 0; i < IntLen; i++) {
+      var n = integerNum.substr(i, 1);
+      var p = IntLen - i - 1;
+      var q = p / 4;
+      var m = p % 4;
+      if (n == '0') {
+        zeroCount++;
+      } else {
+        if (zeroCount > 0) {
+          chineseStr += cnNums[0];
+        }
+        //归零
+        zeroCount = 0;
+        chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+      }
+      if (m == 0 && zeroCount < 4) {
+        chineseStr += cnIntUnits[q];
+      }
+    }
+    chineseStr += cnIntLast;
+  }
+  //小数部分
+  if (decimalNum != '') {
+    var decLen = decimalNum.length;
+    for (var i = 0; i < decLen; i++) {
+      var n = decimalNum.substr(i, 1);
+      if (n != '0') {
+        chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+      }
+    }
+  }
+  if (chineseStr == '') {
+    chineseStr += cnNums[0] + cnIntLast + cnInteger;
+  } else if (decimalNum == '') {
+    chineseStr += cnInteger;
+  }
+  return chineseStr;
+}
+
+		$( document ).ready(function() {
+			var hj = $('#hj').text();
+			//var cnumber = '个人白县万';
+			var cnumber = convertCurrency(hj);
+			//alert('H：'+cnumber);
+			$('#cnum').text(cnumber);
+			var dwbm = $('#dwbm').text();
+			//alert('dwbm='+dwbm);
+			var url_dwbm = '/dwfl/dwbm/'+dwbm;
+			//alert('url_dwbm'+url_dwbm);
+			$.getJSON(url_dwbm,function(data){
+				var dwmc = data.dwmc + '_' + data.ygxz;
+				$('#dwmc').text(dwmc);
+			});
+		});
+</script>
+
+
+
+</body>
+</html>

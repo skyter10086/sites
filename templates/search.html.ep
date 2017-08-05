@@ -1,0 +1,53 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Search Category - jQuery EasyUI Demo</title>
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+        <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+        <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    </head>
+    <body>
+        <h2>Search Category</h2>
+        <p>Select a category and click search button or press enter key in input box to do searching.</p>
+        <div style="margin:20px 0;"></div>
+        <div class="easyui-panel" style="width:100%;max-width:800px;padding:30px 60px;">
+            <input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:600px">
+
+        <div id="mm">
+            <div data-options="name:'xm',iconCls:'icon-ok'">姓名</div>
+            <div data-options="name:'scbh'">手册编号</div>
+            <div data-options="name:'sfzh'">身份证号</div>
+        </div>
+
+        <table id="tt" class="easyui-datagrid" style="width:600px;height:250px"
+		url="/query" title="Load Data" iconCls="icon-save"
+		rownumbers="true" pagination="true">
+	<thead>
+		<tr>
+			<th field="scbh" width="80" align="center">手册编号</th>
+			<th field="sfzh" width="150" align="center">身份证</th>
+			<th field="xm" width="60" align="center">姓名</th>
+			<th field="xb" width="30" align="center">性别</th>
+			<th field="dwbm" width="80" align="center">单位编码</th>
+			<th field="gzsj" width="80" align="center">工作时间</th>
+      <th field="zzflbz" width="88" align="center">状态标志</th>
+
+		</tr>
+	</thead>
+</table>
+
+        <script>
+            function doSearch(value,name){
+
+		    $('#tt').datagrid('load',{
+		"key" : name,
+		"val": value
+	});
+
+	    }
+        </script>
+    </body>
+    </html>

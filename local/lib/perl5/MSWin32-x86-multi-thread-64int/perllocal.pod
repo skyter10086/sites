@@ -1,0 +1,88 @@
+=head2 Mon Jul 24 08:27:47 2017: C<Module> L<Mojolicious|Mojolicious>
+
+=over 4
+
+=item *
+
+C<installed into: C:\sites\local\lib\perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 7.36>
+
+=item *
+
+C<EXE_FILES: script/hypnotoad script/mojo script/morbo>
+
+=back
+
+=head2 Mon Jul 24 08:29:43 2017: C<Module> L<PerlIO::utf8_strict|PerlIO::utf8_strict>
+
+=over 4
+
+=item *
+
+C<installed into: C:\sites\local\lib\perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.007>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 24 08:29:47 2017: C<Module> L<Import::Into|Import::Into>
+
+=over 4
+
+=item *
+
+C<installed into: C:\sites\local\lib\perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.002005>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Jul 24 08:29:50 2017: C<Module> L<utf8::all|utf8::all>
+
+=over 4
+
+=item *
+
+C<installed into: C:\sites\local\lib\perl5>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.023>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

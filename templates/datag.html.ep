@@ -1,0 +1,4 @@
+
+% for my $framework (@$frameworks) {
+      <%= $framework %> is a .
+          % }

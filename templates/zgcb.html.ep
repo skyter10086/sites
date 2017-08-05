@@ -1,0 +1,141 @@
+ <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Search Category - jQuery EasyUI Demo</title>
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+        <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+        <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    </head>
+    <body>
+        <h2>职工参保信息登记</h2>
+	<p>新增参保人员信息填写</p>
+	<div style="margin:20px 0;"></div>
+	<div class="easyui-panel" title="新增参保" style="width:600px">
+		<div style="padding:10px 60px 40px 60px" align="center">
+	    <form id="ff" method="post" url="/service/zg/xcb">
+	    	<table cellpadding="5">
+	    		<tr>
+	    			<td>手册编号:</td>
+	    			<td><input class="easyui-textbox" type="text" name="scbh" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>身份证号:</td>
+	    			<td><input class="easyui-textbox" type="text" name="sfzh" data-options="required:true,validType:'idcared'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>姓名:</td>
+	    			<td><input class="easyui-textbox" type="text" name="xm" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>性别:</td>
+	    			<td><select class="easyui-combobox" name="xb"><option value="男">男</option><option value="女">女</option></select></td>
+	    		</tr>
+	    		<tr>
+	    			<td>民族:</td>
+	    			<td><input class="easyui-textbox" type="text" name="mz" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>出生日期:</td>
+	    			<td><input class="easyui-datebox" name="csny" data-options="formatter:myformatter,parser:myparser"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>工作时间:</td>
+	    			<td><input class="easyui-datebox" name="gzsj" data-options="formatter:myformatter,parser:myparser"></input></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>单位编码:</td>
+	    			<td><input class="easyui-textbox" type="text" name="dwbm" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>单位名称:</td>
+	    			<td><input class="easyui-textbox" type="text" name="dwmc" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>缴费基数:</td>
+	    			<td><input class="easyui-numberbox" name="jfgzjs" value="1234567.89" data-options="precision:2,groupSeparator:',',prefix:'￥'"></input></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>个人缴纳:</td>
+	    			<td><input class="easyui-numberbox" name="grjn" value="1234567.89" data-options="precision:2,groupSeparator:',',prefix:'￥'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>单位划转:</td>
+	    			<td><input class="easyui-numberbox" name="dwhz" value="1234567.89" data-options="precision:2,groupSeparator:',',prefix:'￥'"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>省编码:</td>
+	    			<td><input class="easyui-textbox" type="text" name="aac001" data-options="required:true"></input></td>
+	    		</tr>
+	    		<tr>
+	    			<td>省单位码:</td>
+	    			<td><input class="easyui-textbox" type="text" name="aab001" data-options="required:true"></input></td>
+	    		</tr>
+	    		
+	    	</table>
+	    </form>
+	    <div style="text-align:center;padding:5px">
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+
+
+
+        <script>
+        function myformatter(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+		}
+		function myparser(s){
+			if (!s) return new Date();
+			var ss = (s.split('-'));
+			var y = parseInt(ss[0],10);
+			var m = parseInt(ss[1],10);
+			var d = parseInt(ss[2],10);
+			if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+				return new Date(y,m-1,d);
+			} else {
+				return new Date();
+			}
+		}
+        		function submitForm(){
+			$('#ff').form('submit');
+		}
+		function clearForm(){
+			$('#ff').form('clear');
+		}
+		    var aCity={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"}   
+      
+    function isCardID(sId){   
+        var iSum=0 ;  
+        var info="" ;  
+        if(!/^\d{17}(\d|x)$/i.test(sId)) return "你输入的身份证长度或格式错误";   
+        sId=sId.replace(/x$/i,"a");   
+        if(aCity[parseInt(sId.substr(0,2))]==null) return "你的身份证地区非法";   
+        sBirthday=sId.substr(6,4)+"-"+Number(sId.substr(10,2))+"-"+Number(sId.substr(12,2));   
+        var d=new Date(sBirthday.replace(/-/g,"/")) ;  
+        if(sBirthday!=(d.getFullYear()+"-"+ (d.getMonth()+1) + "-" + d.getDate()))return "身份证上的出生日期非法";   
+        for(var i = 17;i>=0;i --) iSum += (Math.pow(2,i) % 11) * parseInt(sId.charAt(17 - i),11) ;  
+        if(iSum%11!=1) return "你输入的身份证号非法";   
+        return true;//aCity[parseInt(sId.substr(0,2))]+","+sBirthday+","+(sId.substr(16,1)%2?"男":"女")   
+    }   
+      
+      
+    $.extend($.fn.validatebox.defaults.rules, {     
+        idcared: {     
+            validator: function(value,param){    
+                var flag= isCardID(value);  
+                return flag==true?true:false;    
+            },     
+            message: '不是有效的身份证号码'    
+        }     
+    });  
+        </script>
+    </body>
+    </html>
+
+
+

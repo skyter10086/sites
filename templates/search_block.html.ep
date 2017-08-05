@@ -1,0 +1,11 @@
+ <h2 id="header"></h2>
+        <p id="descrip"></p>
+        <div style="margin:20px 0;"></div>
+        <div class="easyui-panel" style="width:100%;max-width:1200px;padding:5px 10px;">
+            <input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:600px">
+		
+        <div id="mm">
+            <div id="search-input" data-options="name:search_name,iconCls:'icon-ok'">Caption</div>
+          
+        </div>
+		</div>
