@@ -50,6 +50,8 @@ post 'upload' => sub{
  my $sth = $dbh->prepare($stmt);
 #sub insert_with_csv{
   my $data = $example->slurp();
+  $data =~ s/'//mg;
+  $data =~ s/"//mg;
   my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
 open my $fh1, "<", \$data;
 #my @foo;
