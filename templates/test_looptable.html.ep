@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<style type="text/css" media="print">
+    #tab-content{
+			margin: 10px 30px 50px;
+			position:relative;
+		}
+		#qrcode{
+			position:absolute;right:10px;bottom:10px;
+		}
+		@page{
+			size: A4 landscape;
+
+
+		}
+	</style>
+
+	<title>河南油田社保中心征集单查询打印</title>
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/qrcodejs-master/qrcode.js"></script>
+<script  type="text/JavaScript" src="/Jqprint/jQuery.print.js" ></script>
+
+</head>
+<body>
+	<div id="test" style="display:none;"></div>
+	<div id="url_for" style="display:none;"><%= $url_tab  %></div>
+	<div class="no-print" align="center">
+	<h2>社会保险征集单查询打印</h2>
+	<p>请输入参数，点击相应的按钮进行查询和打印征集单操作.</p>
+	<div style="margin:20px 0;"></div>
+	<div class="easyui-panel" style="width:100%;max-width:1200px;padding:5px 10px;">
+	<!--<input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:30%">
+
+	<div id="mm">
+			<div data-options="name:'dwbm',iconCls:'icon-ok'">单位编码</div>
+			<div data-options="name:'zjq'">征集期</div>
+			<div data-options="name:'dwxz'">单位性质</div>
+	</div>
+-->
+<!--data-options="
+				url:'/dwfl/dwfls/',
+				method:'get',
+				valueField:'text',
+				textField:'text',
+				panelHeight:'auto',
+				label: '单位分类:',
+				labelPosition: 'top'
+				"
+			-->
+<div style="margin:20px">
+	<label><input type="radio" value="dwbm"  name="selected" />单位编码</label>
+	<label><input type="radio" value="dwfl"  name="selected" />单位分类</label>
+	<div style="margin:10px 0;"></div>
+	<div>
+			<input  id="domain" name="dep_select" style="width=550px; ">
+			<input  id="_bxlx" class="easyui-combobox" name="bxlx_select" style="width=30% " data-options="
+							data:[
+							{label:'养老保险',value:'A01'},
+							{label:'工伤保险',value:'A02'},
+							{label:'失业保险',value:'A03'},
+							{label:'医疗保险',value:'A04'}
+							],
+
+							valueField:'value',
+							textField:'label',
+							panelHeight:'auto',
+							label: '保险类型:',
+							labelPosition: 'top',
+							onSelect: function(rec){
+								var url = '/zjqs/'+rec.value;
+								$('#zhjq').combobox('clear');
+								$('#zhjq').combobox('loadData',{});
+  								$('#zhjq').combobox('reload', url);
+                            }">
+			<input id="zhjq" class="easyui-combobox" name="zjq" style="width=30%" data-options="
+
+							method:'get',
+							valueField:'text',
+							textField:'text',
+							panelHeight:'auto',
+							label: '征集期:',
+							labelPosition: 'top'
+							">
+
+							<input id="btnLoad" type="button" value="查询" ></input>
+						<input id="btnReset" type="button" value="重置" ></input>
+					</div>
+	</div>
+
+	<table id="tt" class="easyui-datagrid" style="width:1150px;height:550px"
+url="/query_zjd" title="征集数据" iconCls="icon-save"
+rownumbers="true" pagination="true">
+<thead>
+<tr>
+	<th field="id"  align="center">ID</th>
+<th field="dwbm" width="80" align="center">单位编码</th>
+<th field="zjq" width="80" align="center">征集期</th>
+<th field="dyyzrs" width="80" align="center">征集人数</th>
+<th field="dwjs" width="110" align="center">单位基数</th>
+<th field="grjs" width="60" align="center">个人基数</th>
+<th field="dwdy" width="100" align="center">单位缴纳</th>
+<th field="grdy" width="80" align="center">个人缴纳</th>
+<th field="dwbz" width="80" align="center">单位补征</th>
+<th field="grbz" width="88" align="center">个人补征</th>
+<th field="dwsz" width="80" align="center">单位实征</th>
+<th field="grsz" width="80" align="center">个人实征</th>
+<th field="dzsj" width="80" align="center">到账时间</th>
+
+</tr>
+</thead>
+</table>
+<input id="btnPrint" type="button" value="打印征集单"></input>
+<input id="btnSelectAll" type="button" value="选中全部"></input>
+<input id="btnClearAll" type="button" value="反选全部"></input>
+</div>
+<div  id="tab_content" >
+	<table  cellspacing="0" border="0" width="98%">
+<colgroup width="145"></colgroup>
+	<colgroup width="220"></colgroup>
+	<colgroup width="205"></colgroup>
+	<colgroup width="126"></colgroup>
+	<colgroup width="89"></colgroup>
+	<colgroup width="154"></colgroup>
+	<colgroup width="128"></colgroup>
+	<colgroup width="141"></colgroup>
+	<colgroup span="2" width="75"></colgroup>
+		<tr>
+			<td rowspan=16 ></td>
+			<td colspan=7 height="50" align="center" valign=middle><b><font size=5>河南油田社会保险征集通知单</font></b></td>
+			<td align="left"><br></td>
+			<td align="left"><br></td>
+		</tr>
+		<tr>
+			<td colspan=2 height="26" align="left" >单位:局社会保险中心</td>
+			<td align="left" valign=middle><br></td>
+			<td align="left" valign=middle><br></td>
+			<td align="left" valign=middle><br></td>
+
+			<td colspan=2 align="right" valign=middle>单位:元</td>
+			<td align="left" valign=middle><br></td>
+			<td align="left" valign=middle><br></td>
+
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位编号</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle><b><div id="dwbm" ></div></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位名称</b></td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b><span id="dwmc"></span></b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>缴费月份</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="201707" sdnum="2052;"><b><span id="zjq"></span></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>缴费金额</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="532337.94" sdnum="2052;0;#,##0.00"><b>￥<span id="hj1"></span></b></td>
+			<td align="left"><br></td>
+			<td align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位缴费比例</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="0.19" sdnum="2052;0;0.00%"><b><span id="dwbl"></span>%</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴费比例</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="0.08" sdnum="2052;0;0.00%"><b><span id="grbl"></span>%</b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="41" align="center" valign=middle><b>款项内容</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位基数</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人基数</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>在职人数</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位缴纳</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴纳</b></td>
+			<td style="border-top: 1px solid #2e3436; </span>border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>小计</b><td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><span id="xz"></sapn></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="dwjs"></span></font></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="grjs"></span></font></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="590" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="dyyzrs"></span> </font></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="374608.18" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id="dwdy"></span></font></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="157729.76" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id="grdy"></span></font></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="532337.94" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id= "hj2"></span></font></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td align="left"><br></td>
+			<td colspan=2 align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px squery_zjdolid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b><br></b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>合计（大写）</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle sdnum="2052;2052;[DBNum2][$-804]General"><b><span id="cnum" ></span></b></td>
+			<td align="left"><br></td>
+			<td colspan=2 align="left"><br></td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>备注：</b></td>
+			<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle><b>无</b></td>
+			<td align="left"><br></td>
+			<td align="left"><br></td>
+		</tr>
+		<tr>
+			<td colspan=7 height="25" align="left"><b>单位全称：河南省南阳油田社会保险管理局    帐号：1714028509049088885     开户行：工行油支</b></td>
+			<td align="left"><br></td>
+			<td  align="left"><br></td>
+
+		</tr>
+	</table>
+	<div id="qrcode"> </div>
+</div>
+<!--<script type="text/JavaScript" src="put.js" ></script>-->
+<script  type="text/JavaScript" src="../get_json.js" ></script>
+<script  type="text/JavaScript" src="../chineseStr.js" ></script>
+<script  type="text/JavaScript" src="../field_fill.js" ></script>
+<script>
+function chkTrue(variable1){
+	var patt = /\s+/;
+	if ( variable1 == null || variable1 == undefined || variable1 == '' || patt.test(variable1) ){
+		return false;
+	}else{
+		return true;
+	}
+}
+	bx = '';
+	xz = {
+		'A01':'养老保险',
+		'A02':'工伤保险',
+		'A03':'失业保险',
+		'A04':'医疗保险',
+		'A05':'生育保险'
+
+	};
+
+	$("#btnReset").click(function(){
+		$('#zhjq').combobox('clear');
+		$('#_bxlx').combobox('clear');
+		//
+		$('#domain').combobox('clear');
+
+		$("#tt").datagrid('loadData', { total: 0, rows: [] });
+	});
+
+$("#btnSelectAll").click(function(){
+	$("#tt").datagrid('selectAll');
+});
+$("#btnClearAll").click(function(){
+	$("#tt").datagrid('unselectAll');
+});
+$("#btnLoad").click(function(){
+
+	var key = $("input[name='selected']:checked").val();
+	var val = $("#domain").val();
+	var zjq = $('#zhjq').combobox('getValue');
+	var bxlx = $("#_bxlx").val();
+	bx = bxlx;
+//$('#test').text(chkTrue(val));
+
+	if(chkTrue(key) && chkTrue(val) && chkTrue(zjq) && chkTrue(bxlx)){
+	$("#tt").datagrid('loadData', { total: 0, rows: [] });
+	$("#tt").datagrid('load',{
+		'key':key,
+		'val':val,
+		'zjq':zjq,
+		'bxlx':bxlx
+
+	});
+}else {
+		alert('参数不足，请重新输入!');
+		$("#btnReset").click();
+	}
+
+});
+
+function doSearch(){
+	var key = $("[name='selected'][checked=true]").val();
+	var val = $("#domain").val();
+	var zjq = $("#zhjq").combobox('getValue');
+	var bxlx_ = $("#_bxlx").val();
+	alert('key: '+key+" val: "+val+" zjq: "+zjq+" bxlx: "+bxlx_);
+/*
+$('#tt').datagrid('load',{
+"key" : name,
+"val": value
+});
+*/
+}
+
+$("input[name='selected']").change(function(){
+	//$(this).checked=true;
+	var chk_val =  $("input[name='selected']").filter(":checked").val();
+	if(chk_val == "dwfl"){
+
+	$("#domain").combobox({
+		url:'/dwfl/dwfls/',
+		method:'get',
+		valueField:'text',
+		textField:'text',
+		panelHeight:'auto',
+		label: '单位分类:',
+		labelPosition: 'top'
+
+
+	});
+
+}else {
+	$("#domain").combobox({
+		url:'/dwfl/dwbms/',
+		method:'get',
+		valueField:'text',
+		textField:'text',
+		panelHeight:'auto',
+		label: '单位编码:',
+		labelPosition: 'top'
+
+
+	});
+
+}
+
+});
+
+
+	$("#btnPrint").click(function(){
+		$("#tab_content").toggle();
+		var data_seq = getSelections();
+
+
+
+		for (d in data_seq) {
+			var dd = data_seq[d];
+
+			var id = dd['id'];
+			//alert(ids);
+			var url = $("#url_for").text();
+			var url_id = url+bx+"/"+id;
+			qrcode.clear();
+			qrcode.makeCode(url_id);
+			var dwdy = Number(dd['dwdy']);
+			var grdy = Number(dd['grdy']);
+			var hj = (dwdy+ grdy).toFixed(2);
+			var cnumber = convertCurrency(hj);
+
+			var zhjq = dd['zjq'];
+			var url_bl = '/zjbl/'+bx+"/"+zhjq;
+			var bl = get_json(url_bl);
+
+
+			var dwbm = dd['dwbm'];
+			var url_dwbm = '/dwfl/dwbm/'+dwbm;
+			var dw = get_json(url_dwbm);
+
+			dd['xz'] = xz[bx];
+			dd['dwbl'] = (Number(bl.dwbl)*100).toFixed(2);
+			dd['grbl'] = (Number(bl.grbl)*100).toFixed(2);
+			dd['dwmc']= dw.dwmc+"_"+dw.ygxz;
+			//alert(dd['dwmc'])
+			dd['cnum'] = cnumber;
+			dd['hj1'] = hj;
+			dd['hj2'] = hj;
+			var fields_array =  Object.keys(dd);
+			fields_filled(fields_array, dd);
+
+			$("#tab_content").print({
+				globalStyles: true,
+				mediaPrint: true,
+				stylesheet: null,
+				noPrintSelector: ".no-print",
+				iframe: true,
+				append: null,
+				prepend: null,
+				manuallyCopyFormValues: true,
+				deferred: $.Deferred(),
+				timeout: 750,
+				title: null,
+				doctype: '<!doctype html>',
+			});
+			//await sleep(5000);
+		}
+			/*$("#tab_content").printThis();*/
+			$("#tab_content").toggle();
+	});
+
+function getSelections() {
+	var ss = [];
+var rows = $('#tt').datagrid('getSelections');
+for(var i=0; i<rows.length; i++){
+	var row = rows[i];
+	ss.push({"id":row.id,"zjq":row.zjq,"dwbm":row.dwbm,"dwjs":row.dwjs,"grjs":row.grjs,"dyyzrs":row.dyyzrs,"dwdy":row.dwdy,"grdy":row.grdy});
+}
+return ss;
+}
+qrcode = new QRCode("qrcode",{
+    text: "http://www.runoob.com",
+    width: 64,
+    height: 64,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+
+
+		$(document).ready(function() {
+			$("#tt").datagrid('hideColumn', 'id');
+		 	$("#tab_content").hide();
+		 $("input[name='selected'][value='dwfl'").attr("checked",true);
+		 $("#domain").combobox({
+		url:'/dwfl/dwfls/',
+		method:'get',
+		valueField:'text',
+		textField:'text',
+		panelHeight:'auto',
+		label: '单位分类:',
+		labelPosition: 'top'
+
+
+	});
+		 //$("#tt").datagrid('hideColumn', 'id');
+		 $("#tt").datagrid({'singleSelect':0});
+
+		});
+</script>
+
+
+
+</body>
+</html>

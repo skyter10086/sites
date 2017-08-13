@@ -1,0 +1,58 @@
+ 
+% layout 'lays' , title  => 'laysout';
+    <h2>Basic FileBox</h2>
+    <p>The filebox component represents a file field of the forms.</p>
+    <div style="margin:20px 0;"></div>
+    <div class="easyui-panel" title="Upload File" style="width:100%;max-width:400px;padding:30px 60px;">
+    <form id="ff" method="post" enctype="multipart/form-data">
+        <div style="margin-bottom:20px">
+        
+        <input  id="_bxlx" class="easyui-combobox" name="bxlx_select" style="width=100%" data-options="
+							data:[
+							{label:'养老保险',value:'A01'},
+							{label:'工伤保险',value:'A02'},
+							{label:'失业保险',value:'A03'},
+							{label:'医疗保险',value:'A04'},
+							{label:'生育保险',value:'A05'}
+							],
+
+							valueField:'value',
+							textField:'label',
+							panelHeight:'auto',
+							label: '保险类型:',
+							labelPosition: 'top'
+							">
+							
+            
+        </div>
+        <div style="margin-bottom:40px">
+            <input class="easyui-filebox" id="f1" name="file1" label="File1:" labelPosition="top" data-options="prompt:'Choose a file...'" style="width:100%">
+        </div>
+        
+        <div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:100%">Upload</a>
+        </div>
+       </form>
+    </div>
+    
+    %= javascript  begin
+		
+			$('#ff').form({
+				url:'/upload',
+			    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+				},
+				success:function(data){
+					alert(data);
+				}
+			});
+		
+		
+		
+		
+		function submitForm() {
+            $('#ff').form('submit');
+        }
+    % end
+

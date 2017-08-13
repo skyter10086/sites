@@ -1,0 +1,61 @@
+
+
+html {
+  background-color: #00539F; /* 背景色橘红色 */
+  font-size: 10px; /* px 意为“像素（pixels）”: 这个基础字体的尺寸现在是10像素  */
+  font-family: 'Open Sans', sans-serif; /* 字体设置 */
+}
+
+h1 {
+
+  margin: 0;  
+  padding: 20px 0;    
+  color: #00539F;
+  text-shadow: 3px 3px 1px black; 
+  /* {阴影文本}
+   *    ![h-shadow-水平阴影的位置,允许负值] 
+   * && ![v-shadow-垂直阴影的位置,允许负值]
+   * && ?[blur-模糊的距离]
+   * && ?[color-阴影的颜色]*/
+
+  font-size: 60px;
+  text-align: center; /* {文本对齐} ^设置文本对齐方式 */
+}
+
+p, li {
+  font-size: 16px;    /* 字体尺寸 ^可以使用 px cm等长度单位 也可以使用%作单位 */
+  line-height: 2; 
+  /* {文字行间距} : 
+  *    ["normal"-默认，合理行间距] 
+  * || [数值-此数字会与当前的字体尺寸相乘来设置行间距]
+  * || [长度-设置固定行间距]
+  * || ["\d+%"-基于当前字体尺寸的百分比行间距]
+  * || ["inherit"-规定应从父元素继承line-height属性值]
+  */
+  letter-spacing: 1px; 
+  /* {设置字符间距}
+   *    ["normal"-默认,规定字符间没有额外的空间] 
+   * || [长度-定义字符间的固定空间（允许使用负值)] 
+   * || ["inherit"-规定应该从父元素继承 letter-spacing 属性的值]
+   */
+}
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+body {
+  width: 600px;
+  margin: 0 auto; /* ^参见盒子模型,上下左右 {盒外间距} */
+  background-color: #FF9500; 
+  padding: 0 20px 20px 20px; /* {盒内间距} ^设置同上 */
+  border: 5px solid black; 
+  /* {边框线设置} 
+   *    [border-width-指定边框的宽度]
+   * && [border-style-指定边框的样式] 
+   *    (none,hidden,dotted,dashed,solid,double,groove,ridge,inset,outset,inherit)
+   * && [border-color-指定边框的颜色] ^有多种表示颜色方式，查css参考手册 
+   * || ["inherit"-指定应该从父元素继承border属性值]
+  
+  */
+}

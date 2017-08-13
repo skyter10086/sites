@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/qrcodejs-master/qrcode.js"></script>
+<script  type="text/JavaScript" src="/Jqprint/jQuery.print.js" ></script>
+<title><%= title %></title>
+</head>
+<body>
+	<%= content %>
+<script  type="text/JavaScript" src="../get_json.js" ></script>
+<script  type="text/JavaScript" src="../chineseStr.js" ></script>
+<script  type="text/JavaScript" src="../field_fill.js" ></script>
+<%= javascript %>
+</body>
+</html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Server error (development mode)</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <script src="/mojo/jquery/jquery.js"></script>
+    <script src="/mojo/prettify/run_prettify.js"></script>
+    <link href="/mojo/prettify/prettify-mojo-dark.css" rel="stylesheet">
+    <style>
+      a img { border: 0 }
+      body {
+        background: url(/mojo/pinstripe-light.png);
+        color: #445555;
+        font: 0.9em 'Helvetica Neue', Helvetica, sans-serif;
+        font-weight: normal;
+        line-height: 1.5em;
+        margin: 0;
+      }
+      :not(pre) > code {
+        background-color: #eef9ff;
+        border: solid #cce4ff 1px;
+        border-radius: 5px;
+        color: #333;
+        font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+        padding: 0.4em;
+      }
+      h1 {
+        color: #2a2a2a;
+        font-size: 1.5em;
+        margin: 0;
+      }
+      pre {
+        font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+        margin: 0;
+        white-space: pre-wrap;
+      }
+      pre > code {
+        display: block;
+        font: 1.0em Consolas, Menlo, Monaco, Courier, monospace;
+        margin-bottom: 0.7em;
+        margin-top: 0.7em;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      td { padding: 0.5em }
+      .box {
+        background-color: #fff;
+        border: 1px solid #c1c1c1;
+        overflow: hidden;
+        padding: 1em;
+      }
+      .code {
+        background-color: #1a1a1a;
+        background: url(/mojo/pinstripe-dark.png);
+        color: #eee;
+        text-shadow: #333 0 1px 0;
+      }
+      .important { background-color: rgba(47, 48, 50, .75) }
+      .infobox { color: #333 }
+      .infobox tr:nth-child(odd) .value { background-color: #ddeeff }
+      .infobox tr:nth-child(even) .value { background-color: #eef9ff }
+      .key { text-align: right }
+      .more table { margin-bottom: 1em }
+      .spaced {
+        margin-left: 5em;
+        margin-right: 5em;
+      }
+      .striped { border-top: solid #cce4ff 1px }
+      .tap {
+        font: 0.5em Verdana, sans-serif;
+        text-align: center;
+      }
+      .value { padding-left: 1em }
+      .wide { width: 100% }
+      #error {
+        font: 1.5em 'Helvetica Neue', Helvetica, sans-serif;
+        font-weight: 300;
+        margin: 0;
+        text-shadow: #333 0 1px 0;
+      }
+      #footer {
+        padding-top: 1em;
+        text-align: center;
+      }
+      #nothing {
+        border-bottom: 0;
+        padding-top: 60px;
+      }
+      #showcase {
+        border-bottom: 0;
+        border-top: 0;
+      }
+      #showcase table { margin-top: 1em }
+      #showcase td {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      #showcase .key { padding-right: 0 }
+      #log {
+        border-radius: 5px;
+        margin-top: 1em;
+      }
+      #log table { margin: 0 }
+      #more, #trace {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+      #more .tap, #trace .tap { text-shadow: #ddd 0 1px 0 }
+      #request {
+        border-bottom: 0;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        margin-top: 1em;
+      }
+      #routes {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding-top: 70px;
+      }
+      #trace { border-top: 0 }
+      #wrapperlicious {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="/mojo/jquery/jquery.js"></script>
+<div id="mojobar">
+  <style scoped="scoped">
+    #mojobar {
+      background-color: #1a1a1a;
+      background: -webkit-linear-gradient(top, #2a2a2a 0%, #000 100%);
+      background: -moz-linear-gradient(top, #2a2a2a 0%, #000 100%);
+      background: linear-gradient(top, #2a2a2a 0%, #000 100%);
+      box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5);
+      height: 46px;
+      overflow: hidden;
+      position: absolute;
+      text-align: right;
+      vertical-align: middle;
+      width: 100%;
+      z-index: 1000;
+    }
+    #mojobar-content {
+      margin: 0 auto;
+      max-width: 1000px;
+    }
+    #mojobar-logo {
+      float: left;
+      margin-left: 5em;
+      padding-top: 4px;
+    }
+    #mojobar-links {
+      display:table-cell;
+      float: right;
+      height: 60px;
+      margin-right: 5em;
+      margin-top: 0.8em;
+    }
+    #mojobar-links a {
+      color: #bbb;
+      font: 0.9em 'Helvetica Neue', Helvetica, sans-serif;
+      margin-left: 0.5em;
+      text-decoration: none;
+      transition: all 200ms ease-in-out;
+    }
+    #mojobar-links a:hover { color: #fff }
+    #mojobar-links input {
+      background-color: #3a3a3a;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
+      color: #eee;
+      display: inline;
+      margin-left: 1em;
+      padding: 4px;
+      transition: all 0.15s;
+    }
+    #mojobar-links input:focus {
+      background-color: #fff;
+      color: #111;
+      outline: 0;
+    }
+    #mojobar-links form { display: inline }
+    .animated { transition: all 0.25s ease }
+  </style>
+  <div id="mojobar-content">
+    <div id="mojobar-logo">
+      <a href="http://mojolicious.org">
+        <img alt="Mojolicious logo" src="/mojo/logo-white.png">
+</a>    </div>
+    <div id="mojobar-links">
+      <a href="http://mojolicious.org/perldoc">Documentation</a>
+      <a href="https://github.com/kraih/mojo/wiki">Wiki</a>
+      <a href="https://github.com/kraih/mojo">GitHub</a>
+      <a href="https://metacpan.org/release/Mojolicious/">CPAN</a>
+      <a href="https://groups.google.com/group/mojolicious">MailingList</a>
+      <a href="http://blog.mojolicious.org">Blog</a>
+      <a href="https://twitter.com/kraih">Twitter</a>
+      <form action="https://www.google.com/cse" target="_blank">
+        <input name="cx" type="hidden" value="014527573091551588235:pwfplkjpgbi">
+        <input name="ie" type="hidden" value="UTF-8">
+        <input name="q" placeholder="Search" type="search">
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  var mojobar = $('#mojobar');
+  var mojobarHeight = mojobar.outerHeight();
+  function getElementByHash(hash) {
+    return $(hash.replace(/(:|\.|\[|\]|,)/g, '\\$1'));
+  }
+  function fixOffset() {
+    var offset = getElementByHash(window.location.hash).offset();
+    if (offset) {
+      $('html, body').animate({scrollTop: offset.top - mojobarHeight}, 1);
+    }
+  }
+  $(window).on('load', function () {
+    if (window.location.hash) {
+      fixOffset();
+    }
+    var start = mojobar.offset().top;
+    var fixed;
+    var lastScrollTop = $(window).scrollTop();
+    var hidden = mojobarHeight + 1;
+    $(window).on('scroll', function () {
+      var st = $(window).scrollTop();
+      if (fixed) {
+        if (st <= start) {
+          fixed = false;
+          mojobar.removeClass('animated');
+          mojobar.css({'position': 'absolute', 'top': start + 'px'});
+        }
+        else if (Math.abs(lastScrollTop - st) > 100) {
+          if (!mojobar.hasClass('animated')) {
+            mojobar.addClass('animated');
+          }
+          if (st > lastScrollTop && st > (mojobarHeight + start + 250)) {
+            mojobar.css('transform', 'translateY(-' + hidden + 'px)');
+          }
+          else if (st < lastScrollTop) {
+            mojobar.css('transform', 'translateY(0px)');
+          }
+          lastScrollTop = st;
+        }
+      }
+      else if (st > start) {
+        fixed = true;
+        mojobar.css({'position': 'fixed', 'top': 0});
+        lastScrollTop = $(window).scrollTop();
+      }
+    });
+  });
+  $(function () {
+    $('a[href^="#"]').addClass('​mojoscroll').on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var hash   = '#' + this.href.split('#')[1];
+      var target = getElementByHash(hash);
+      var old    = target.attr('id');
+      target.attr('id', '');
+      location.hash = hash;
+      target.attr('id', old);
+      fixOffset();
+    });
+  });
+</script>
+
+    <script>
+      function mojoDrawer (handle, drawer) {
+        $(handle).on('click', function () {
+          $(drawer).slideToggle('slow');
+          var text = $(handle + ' div.tap').text();
+          text = text == "tap for more" ? "tap for less" : "tap for more";
+          $(handle + ' div.tap').text(text);
+        });
+        $(drawer).toggle();
+      }
+      $(function () {
+        mojoDrawer('#trace', '#frames');
+        mojoDrawer('#more', '#infos');
+      });
+    </script>
+    <div id="wrapperlicious">
+        <div id="nothing" class="box spaced"></div>
+        <div id="showcase" class="box code spaced">
+          <pre id="error">Can&#39;t open file &quot;/tmp/tmp.file&quot;: No such file or directory at C:/Strawberry/perl/site/lib/Mojo/Asset/Memory.pm line 44.
+</pre>
+          <div id="context" class="more">
+            <table>
+                          <tr>
+            <td class="key">39</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">  }</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">40</td>
+            <td class="value wide">
+              <pre><code class="prettyprint"></code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">41</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">  return substr shift-&gt;{content} // &#39;&#39;, $offset, $max;</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">42</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">}</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">43</td>
+            <td class="value wide">
+              <pre><code class="prettyprint"></code></pre>
+            </td>
+</tr>
+                          <tr class="important">
+            <td class="key">44</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">sub move_to { path($_[1])-&gt;spurt($_[0]{content} // &#39;&#39;) and return $_[0] }</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">45</td>
+            <td class="value wide">
+              <pre><code class="prettyprint"></code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">46</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">sub size { length(shift-&gt;{content} // &#39;&#39;) }</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">47</td>
+            <td class="value wide">
+              <pre><code class="prettyprint"></code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">48</td>
+            <td class="value wide">
+              <pre><code class="prettyprint">sub slurp { shift-&gt;{content} // &#39;&#39; }</code></pre>
+            </td>
+</tr>
+                          <tr>
+            <td class="key">49</td>
+            <td class="value wide">
+              <pre><code class="prettyprint"></code></pre>
+            </td>
+</tr>
+            </table>
+          </div>
+        </div>
+        <div id="trace" class="box spaced">
+            <div id="frames" class="infobox more">
+              <table>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/lib/Carp.pm:167</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/File.pm:120</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Asset/Memory.pm:44</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Upload.pm:6</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>myapp.pl:43</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:138</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Plugins.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Plugins.pm:18</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Routes.pm:87</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Routes.pm:94</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Routes.pm:35</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Routes.pm:44</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:129</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:139</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Plugins.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:201</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:201</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Plugins.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Plugins.pm:18</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:145</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Server.pm:68</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/EventEmitter.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Server/Daemon.pm:107</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/EventEmitter.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Transaction/HTTP.pm:60</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Server/Daemon.pm:222</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Server/Daemon.pm:203</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/EventEmitter.pm:15</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/IOLoop/Stream.pm:99</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/IOLoop/Stream.pm:48</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Reactor/Poll.pm:143</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Reactor/Poll.pm:143</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Reactor/Poll.pm:58</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Reactor/Poll.pm:99</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/IOLoop.pm:136</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojo/Server/Daemon.pm:46</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Command/daemon.pm:23</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious/Commands.pm:54</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>C:/Strawberry/perl/site/lib/Mojolicious.pm:192</pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="striped value wide">
+                      <pre>myapp.pl:516</pre>
+                    </td>
+                  </tr>
+              </table>
+            </div>
+            <div class="tap">tap for more</div>
+        </div>
+      <div id="request" class="box infobox spaced">
+        <table>
+                  <tr>
+          <td class="key">Method:</td>
+          <td class="striped value wide"><pre>POST</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">URL:</td>
+          <td class="striped value wide"><pre>/upload</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">Base URL:</td>
+          <td class="striped value wide"><pre>http://127.0.0.1:3000</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">Parameters:</td>
+          <td class="striped value wide"><pre>{
+  &quot;bxlx_select&quot; =&gt; &quot;A01&quot;
+}
+</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">Stash:</td>
+          <td class="striped value wide"><pre>{
+  &quot;cb&quot; =&gt; sub { &quot;DUMMY&quot; }
+}
+</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">Session:</td>
+          <td class="striped value wide"><pre>{}
+</pre></td>
+        </tr>
+
+                  <tr>
+          <td class="key">Version:</td>
+          <td class="striped value wide"><pre>1.1</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Accept:</td>
+          <td class="striped value wide"><pre>text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Accept-Encoding:</td>
+          <td class="striped value wide"><pre>gzip, deflate</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Accept-Language:</td>
+          <td class="striped value wide"><pre>zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Connection:</td>
+          <td class="striped value wide"><pre>keep-alive</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Content-Length:</td>
+          <td class="striped value wide"><pre>15023</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Content-Type:</td>
+          <td class="striped value wide"><pre>multipart/form-data; boundary=---------------------------30332696430748</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Host:</td>
+          <td class="striped value wide"><pre>127.0.0.1:3000</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Referer:</td>
+          <td class="striped value wide"><pre>http://127.0.0.1:3000/upload_file</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Upgrade-Insecure-Requests:</td>
+          <td class="striped value wide"><pre>1</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">User-Agent:</td>
+          <td class="striped value wide"><pre>Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0</pre></td>
+        </tr>
+
+        </table>
+      </div>
+      <div id="more" class="box infobox more spaced">
+        <div id="infos">
+          <table>
+                    <tr>
+          <td class="key">Perl:</td>
+          <td class="striped value wide"><pre>v5.26.0 (MSWin32)</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Mojolicious:</td>
+          <td class="striped value wide"><pre>7.36 (Doughnut)</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Home:</td>
+          <td class="striped value wide"><pre>D:\sites_up</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Template paths:</td>
+          <td class="striped value wide"><pre>[
+  bless( do{\(my $o = &quot;D:\\sites_up\\templates&quot;)}, &#39;Mojo::Home&#39; )
+]
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Template classes:</td>
+          <td class="striped value wide"><pre>[
+  &quot;main&quot;
+]
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Static paths:</td>
+          <td class="striped value wide"><pre>[
+  bless( do{\(my $o = &quot;D:\\sites_up\\public&quot;)}, &#39;Mojo::Home&#39; )
+]
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Static classes:</td>
+          <td class="striped value wide"><pre>[
+  &quot;main&quot;
+]
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Include:</td>
+          <td class="striped value wide"><pre>[
+  &quot;C:/Strawberry/perl/site/lib/MSWin32-x64-multi-thread&quot;,
+  &quot;C:/Strawberry/perl/site/lib&quot;,
+  &quot;C:/Strawberry/perl/vendor/lib&quot;,
+  &quot;C:/Strawberry/perl/lib&quot;
+]
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Config:</td>
+          <td class="striped value wide"><pre>{}
+</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Moniker:</td>
+          <td class="striped value wide"><pre>myapp</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Name:</td>
+          <td class="striped value wide"><pre>myapp.pl</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Executable:</td>
+          <td class="striped value wide"><pre>C:\Strawberry\perl\bin\perl.exe</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">PID:</td>
+          <td class="striped value wide"><pre>5424</pre></td>
+        </tr>
+
+                    <tr>
+          <td class="key">Time:</td>
+          <td class="striped value wide"><pre>Sat Aug 12 22:52:00 2017</pre></td>
+        </tr>
+
+          </table>
+        </div>
+        <div class="tap">tap for more</div>
+      </div>
+        <div id="log" class="box infobox spaced">
+          <table>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:51:09 2017] [debug] Rendering cached template &quot;mojo/debug.html.ep&quot;
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:51:09 2017] [debug] Rendering cached template &quot;mojo/menubar.html.ep&quot;
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:51:09 2017] [debug] 500 Internal Server Error (0.016304s, 61.335/s)
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] POST &quot;/upload&quot;
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] Routing to a callback
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [error] Can&#39;t open file &quot;/tmp/tmp.file&quot;: No such file or directory at C:/Strawberry/perl/site/lib/Mojo/Asset/Memory.pm line 44.
+
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] Template &quot;exception.development.html.ep&quot; not found
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] Template &quot;exception.html.ep&quot; not found
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] Rendering cached template &quot;mojo/debug.html.ep&quot;
+</pre>
+                </td>
+              </tr>
+              <tr>
+                <td class="striped value wide">
+                  <pre>[Sat Aug 12 22:52:00 2017] [debug] Rendering cached template &quot;mojo/menubar.html.ep&quot;
+</pre>
+                </td>
+              </tr>
+          </table>
+        </div>
+    </div>
+    <div id="footer">
+      <a href="http://mojolicious.org">
+        <img alt="Mojolicious logo" src="/mojo/logo-black.png">
+</a>    </div>
+  </body>
+</html>

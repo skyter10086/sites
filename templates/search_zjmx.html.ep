@@ -14,14 +14,26 @@
         <p>Select a category and click search button or press enter key in input box to do searching.</p>
         <div style="margin:20px 0;"></div>
         <div class="easyui-panel" style="width:100%;max-width:1200px;padding:5px 10px;">
-            <input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:600px">
-
+        <input class="easyui-searchbox" data-options="prompt:'Please Input Value',menu:'#mm',searcher:doSearch" style="width:30%">
+			
         <div id="mm">
             <div data-options="name:'dwbm',iconCls:'icon-ok'">单位编码</div>
-            <div data-options="name:'dwfl'">单位分类</div>
+            <div data-options="name:'zjq'">征集期</div>
             <div data-options="name:'dwxz'">单位性质</div>
         </div>
-
+        
+		<div style="margin-bottom:20px">
+            <input class="easyui-combobox" name="dwfl" style="width:30%;" data-options="
+                    url:'/dwfl/dwfls/',
+                    method:'get',
+                    valueField:'id',
+                    textField:'text',
+                    panelHeight:'auto',
+                    label: '单位分类:',
+                    labelPosition: 'top'
+                    ">
+        </div>
+    
         <table id="tt" class="easyui-datagrid" style="width:1150px;height:550px"
 		url="/query_zjmx" title="Load Data" iconCls="icon-save"
 		rownumbers="true" pagination="true">
@@ -48,6 +60,10 @@
 
 
         <script>
+        //$('#cc').onLoadSuccess(function(data){
+            
+        
+        //});
         $(function(){
 			$("#tt").datagrid('hideColumn', 'id');
 			$("#tt").datagrid({

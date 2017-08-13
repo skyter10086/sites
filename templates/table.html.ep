@@ -16,11 +16,12 @@
 			  crossorigin="anonymous"></script>
 			  <!--<script type="text/JavaScript" src="printThis-master/printThis.js" ></script>
 			  -->
-<script type="text/JavaScript" src="../Jqprint/jQuery.print.js" ></script>
+<script  type="text/JavaScript" src="../Jqprint/jQuery.print.js" ></script>
 
 </head>
 <body>
-	<div style="hidden"><% my $hj = $dwdy + $grdy; %></div>
+	<span style="display:none" id = "tab_id"><%= $id %></span>
+	<span style="display:none" id = "bxlx"><%= $bxlx %></span>
 <div id="tab_content">
 <table cellspacing="0" border="0" width="98%">
 	<colgroup width="145"></colgroup>
@@ -51,7 +52,7 @@
 	</tr>
 	<tr>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位编号</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle><b><span id="dwbm" ><%=  $dwbm %></span></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle><b><div id="dwbm" ></div></b></td>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位名称</b></td>
 		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=2 align="center" valign=middle><b><span id="dwmc"></span></b></td>
 		<td align="left"><br></td>
@@ -59,17 +60,17 @@
 	</tr>
 	<tr>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>缴费月份</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="201707" sdnum="2052;"><b><%=  $zjq %></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="201707" sdnum="2052;"><b><span id="zjq"></span></b></td>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>缴费金额</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="532337.94" sdnum="2052;0;#,##0.00"><b><%= $hj %></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="532337.94" sdnum="2052;0;#,##0.00"><b>￥<span id="hj2"></span></b></td>
 		<td align="left"><br></td>
 		<td align="left"><br></td>
 	</tr>
 	<tr>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>单位缴费比例</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="0.19" sdnum="2052;0;0.00%"><b>19.00%</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=3 align="center" valign=middle sdval="0.19" sdnum="2052;0;0.00%"><b><span id="dwbl"></span>%</b></td>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴费比例</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="0.08" sdnum="2052;0;0.00%"><b>8.00%</b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=2 align="center" valign=middle sdval="0.08" sdnum="2052;0;0.00%"><b><span id="grbl"></span>%</b></td>
 		<td align="left"><br></td>
 		<td  align="left"><br></td>
 	</tr>
@@ -80,18 +81,17 @@
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>在职人数</b></td>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>单位缴纳</b></td>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>个人缴纳</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>小计</b></td>
-		<td align="left"><br></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" valign=middle><b>小计</b><td align="left"><br></td>
 		<td  align="left"><br></td>
 	</tr>
 	<tr>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>养老保险</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $dwjs %></font></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $grjs %></font></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="590" sdnum="2052;0;#,##0"><font face="Arial" size=3><%=  $dyyzrs %> </font></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="374608.18" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><%=  $dwdy %></font></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="157729.76" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><%=  $grdy %></font></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="532337.94" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id= "hj"><%= $hj %></span></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b><span id="xz"></span></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="dwjs"></span></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="1971622" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="grjs"></span></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="590" sdnum="2052;0;#,##0"><font face="Arial" size=3><span id="dyyzrs"></span> </font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="374608.18" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id="dwdy"></span></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="157729.76" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id="grdy"></span></font></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" align="center" sdval="532337.94" sdnum="2052;0;#,##0.00"><font face="Arial" size=3><span id= "hj1"></span></font></td>
 		<td align="left"><br></td>
 		<td  align="left"><br></td>
 	</tr>
@@ -141,7 +141,7 @@
 	</tr>
 	<tr>
 		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" height="28" align="center" valign=middle><b>合计（大写）</b></td>
-		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle sdnum="2052;2052;[DBNum2][$-804]General"><b><span id="cnum" >伍拾叁万贰千叁佰叁拾柒圆玖角肆分</span></b></td>
+		<td style="border-top: 1px solid #2e3436; border-bottom: 1px solid #2e3436; border-left: 1px solid #2e3436; border-right: 1px solid #2e3436" colspan=6 align="center" valign=middle sdnum="2052;2052;[DBNum2][$-804]General"><b><span id="cnum" ></span></b></td>
 		<td align="left"><br></td>
 		<td colspan=2 align="left"><br></td>
 	</tr>
@@ -160,8 +160,19 @@
 </table>
 </div>
 <input id="btnPrint" type="button" value="打印征集单"></input>
+<!--<script type="text/JavaScript" src="put.js" ></script>-->
+<script  type="text/JavaScript" src="/get_json.js" ></script>
+<script  type="text/JavaScript" src="/chineseStr.js" ></script>
+<script  type="text/JavaScript" src="/field_fill.js" ></script>
 <script>
+xz = {
+	'A01':'养老保险',
+	'A02':'工伤保险',
+	'A03':'失业保险',
+	'A04':'医疗保险',
+	'A05':'生育保险'
 
+};
 
 	$("#btnPrint").click(function(){
 			$("#tab_content").print({
@@ -181,108 +192,85 @@
 			/*$("#tab_content").printThis();*/
 	});
 
+//function fields_filled(fields, data){
+	//for (f in fields){
+	//var field_id = '#'+ fields[f];
+	//var field_val = data[fields[f]];
+	//$(field_id).text(field_val);
+	//}
+//}
 
-function convertCurrency(money) {
-  //汉字的数字
-  var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
-  //基本单位
-  var cnIntRadice = new Array('', '拾', '佰', '仟');
-  //对应整数部分扩展单位
-  var cnIntUnits = new Array('', '万', '亿', '兆');
-  //对应小数部分单位
-  var cnDecUnits = new Array('角', '分', '毫', '厘');
-  //整数金额时后面跟的字符
-  var cnInteger = '整';
-  //整型完以后的单位
-  var cnIntLast = '元';
-  //最大处理的数字
-  var maxNum = 999999999999999.9999;
-  //金额整数部分
-  var integerNum;
-  //金额小数部分
-  var decimalNum;
-  //输出的中文金额字符串
-  var chineseStr = '';
-  //分离金额后用的数组，预定义
-  var parts;
-  if (money == '') { return ''; }
-  money = parseFloat(money);
-  if (money >= maxNum) {
-    //超出最大处理数字
-    return '';
-  }
-  if (money == 0) {
-    chineseStr = cnNums[0] + cnIntLast + cnInteger;
-    return chineseStr;
-  }
-  //转换为字符串
-  money = money.toString();
-  if (money.indexOf('.') == -1) {
-    integerNum = money;
-    decimalNum = '';
-  } else {
-    parts = money.split('.');
-    integerNum = parts[0];
-    decimalNum = parts[1].substr(0, 4);
-  }
-  //获取整型部分转换
-  if (parseInt(integerNum, 10) > 0) {
-    var zeroCount = 0;
-    var IntLen = integerNum.length;
-    for (var i = 0; i < IntLen; i++) {
-      var n = integerNum.substr(i, 1);
-      var p = IntLen - i - 1;
-      var q = p / 4;
-      var m = p % 4;
-      if (n == '0') {
-        zeroCount++;
-      } else {
-        if (zeroCount > 0) {
-          chineseStr += cnNums[0];
-        }
-        //归零
-        zeroCount = 0;
-        chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
-      }
-      if (m == 0 && zeroCount < 4) {
-        chineseStr += cnIntUnits[q];
-      }
-    }
-    chineseStr += cnIntLast;
-  }
-  //小数部分
-  if (decimalNum != '') {
-    var decLen = decimalNum.length;
-    for (var i = 0; i < decLen; i++) {
-      var n = decimalNum.substr(i, 1);
-      if (n != '0') {
-        chineseStr += cnNums[Number(n)] + cnDecUnits[i];
-      }
-    }
-  }
-  if (chineseStr == '') {
-    chineseStr += cnNums[0] + cnIntLast + cnInteger;
-  } else if (decimalNum == '') {
-    chineseStr += cnInteger;
-  }
-  return chineseStr;
-}
+//function get_json(url,params){
+			//var outdata;
+//$.ajax({
+//type : "get",
+//async:false,
+//dataType:"json",
+//url : url,
+//data:params,
+//success : function(data){
+//outdata = data;
+//},
+//error:function(e){
+//alert('ajax error');
+//}
+//});
 
-		$( document ).ready(function() {
-			var hj = $('#hj').text();
-			//var cnumber = '个人白县万';
+//return outdata;
+
+			//}
+
+
+		$(document).ready(function() {
+
+
+
+			var id = $('#tab_id').text();
+		    //alert(id);
+				var bxlx = $('#bxlx').text();
+			var url_id = '/zjmx/'+bxlx+'/'+id;
+			//alert(url_id);
+			var dd =get_json(url_id,{});
+			//alert(dd.dwbm);
+			var zhjq = dd['zjq'];
+			var url_bl = '/zjbl/'+bxlx+"/"+zhjq;
+			var bl = get_json(url_bl);
+
+
+
+			//var fields_array = ["zjq","dwbm","dwjs","grjs","dyyzrs","dwdy","grdy"];
+
+			//alert(result['zjq']);
+			var dwdy = Number(dd['dwdy']);
+		    var grdy = Number(dd['grdy']);
+		    var hj = Number(dwdy+grdy).toFixed(2);
+		    //fields_filled(fields_array, result);
+
+
+			//alert($('#dwbm').text());
+			//var hj = Number(res['dwdy'])+Number(res['grdy']);
+			//var hj = Number($('#dwdy').text()) * 1 + ($('#grdy').text()) * 1;
+			//var dwdy = $('#dwdy').val();
+			//alert(result.dwbm);
+			//$('.hj').text(hj);
+			//var hj = $('#hj').text();
+
 			var cnumber = convertCurrency(hj);
-			//alert('H：'+cnumber);
-			$('#cnum').text(cnumber);
-			var dwbm = $('#dwbm').text();
-			//alert('dwbm='+dwbm);
+			//$('#cnum').text(cnumber);
+			var dwbm = dd['dwbm'];
 			var url_dwbm = '/dwfl/dwbm/'+dwbm;
-			//alert('url_dwbm'+url_dwbm);
-			$.getJSON(url_dwbm,function(data){
-				var dwmc = data.dwmc + '_' + data.ygxz;
-				$('#dwmc').text(dwmc);
-			});
-		});
+			var dw = get_json(url_dwbm);
+
+			dd['xz'] = xz[bxlx];
+			dd['dwbl'] = (Number(bl.dwbl)*100).toFixed(2);
+			dd['grbl'] = (Number(bl.grbl)*100).toFixed(2);
+			dd['dwmc']= dw.dwmc+"_"+dw.ygxz;
+			dd['cnum'] = cnumber;
+			dd['hj1'] = hj;
+			dd['hj2'] = hj;
+			var fields_array =  Object.keys(dd);
+			fields_filled(fields_array, dd);
+});
 </script>
 
 
