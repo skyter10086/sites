@@ -53,10 +53,14 @@ post 'upload' => sub{
   my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
 open my $fh1, "<", \$data;
 #my @foo;
+my $i;
 while (my $row = $csv->getline ($fh1)) {
  #   push @foo, $row;
-	next if grep /dwbm/ @$row ;
+  
+	next if grep /dwbm/ ,@$row ;
 	$sth->execute(@{$row} ) or die $DBI::errstr ;
+	$i++;
+	$dbh->commit if $i%100==0 && $i>100;
    }
  #}
 =pod
