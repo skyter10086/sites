@@ -55,7 +55,7 @@ open my $fh1, "<", \$data;
 #my @foo;
 while (my $row = $csv->getline ($fh1)) {
  #   push @foo, $row;
-	next if $row =~ /dwbm/;
+	next if grep /dwbm/ @$row ;
 	$sth->execute(@{$row} ) or die $DBI::errstr ;
    }
  #}
