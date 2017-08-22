@@ -7,19 +7,261 @@ use Mojo::JSON qw(decode_json encode_json);
 use Data::Dumper;
 use Text::CSV_XS;
 use Encode;
+use Data::Dumper qw(Dumper);
+
+
       my $dbh = DBI->connect("dbi:SQLite::memory:","","",{sqlite_unicode =>1, AutoCommit => 1, RaiseError => 1})
-                     or die $DBI::errstr;
+                or die $DBI::errstr;
       my $statement_a = qq{ATTACH DATABASE '../SQL_Backup/A01.db' as 'A01'};
       my $statement_b = qq{ATTACH DATABASE '../SQL_Backup/A02.db' as 'A02'};
       my $statement_c = qq{ATTACH DATABASE '../SQL_Backup/DW.db' as 'DW'};
-		my $statement_d = qq{ATTACH DATABASE '../SQL_Backup/A03.db' as 'A03'};
+		  my $statement_d = qq{ATTACH DATABASE '../SQL_Backup/A03.db' as 'A03'};
+      my $statement_t = qq{ATTACH DATABASE ':memory:' AS 'TMP'};
       my $rows = $dbh->do($statement_a)           or die $dbh->errstr;
       $rows =   $dbh->do($statement_b)           or die $dbh->errstr;
       $rows = $dbh->do($statement_c)           or die $dbh->errstr;
-	  $rows = $dbh->do($statement_d)           or die $dbh->errstr;
+	    $rows = $dbh->do($statement_d)           or die $dbh->errstr;
+      $rows = $dbh->do($statement_t)           or die $dbh->errstr;
+
+    #  $rows = $dbh->do($tmp_zjmx)           or die $dbh->errstr;
+    #  $rows = $dbh->do($tmp_jfmx)           or die $dbh->errstr;
+    #  $rows = $dbh->do($tmp_zgxx)           or die $dbh->errstr;
+    #  $rows = $dbh->do($tmp_bjmx)           or die $dbh->errstr;
+    #  $rows = $dbh->do($tmp_zgbd)           or die $dbh->errstr;
+    #  $rows = $dbh->do($tmp_jfbl)           or die $dbh->errstr;
+
+      my $tmp_zjmx = qq{CREATE TABLE TMP.Zjmx (
+      	  id     INTEGER         PRIMARY KEY AUTOINCREMENT,
+          zjq      DATE  NOT NULL,
+          dwbm     CHAR(4) NOT NULL,
+          dyyzrs   INT NOT NULL,
+          dwjs     DECIMAL(12,2),
+          grjs     DECIMAL(10,2),
+          dwdy     DECIMAL(12,2),
+          grdy     DECIMAL(10,2),
+          dwbz     DECIMAL(12,2),
+          grbz     DECIMAL(10,2),
+          dwsz     DECIMAL(12,2),
+          grsz     DECIMAL(10,2),
+          dzsj     DATE
+          )
+      };
+      my $tmp_jfmx = qq{CREATE TABLE TMP.Jfmx (
+
+          zjq      DATE     NOT NULL,
+          scbh     CHAR(12) NOT NULL,
+          xm       CHAR(40) NOT NULL,
+          dwbm     CHAR(5)  NOT NULL,
+          jfgzjs   DECIMAL(10,2)    ,
+          grjn     DECIMAL(10,2)    ,
+          dwhz     DECIMAL(10,2)    ,
+          bzys     INT              ,
+          dzbz     BOOLEAN          ,
+          dzsj     DATE
+
+      )};
+      my $tmp_zgxx = qq{CREATE TABLE TMP.Zgxx (
+
+          scbh     CHAR(12) NOT NULL,
+          sfzh     CHAR(19) ,
+          xm       CHAR(40) NOT NULL,
+          xb       CHAR(2)  ,
+          mz       CHAR(20) ,
+          csny     DATE     ,
+          gzsj     DATE     ,
+          dwbm     CHAR(5)  ,
+          dwmc     CHAR(40) ,
+          jfgzjs   DECIMAL(10,2)    ,
+          grjn     DECIMAL(10,2)    ,
+          dwhz     DECIMAL(10,2)    ,
+          zzsj     DATE             ,
+          zzflbz   CHAR(3)      ,
+          zzyy     CHAR(40) ,
+          aac001   CHAR(16)         ,
+          aab001   CHAR(16)         ,
+
+          PRIMARY KEY    (scbh ASC)
+
+      )};
+      my $tmp_bjmx = qq{CREATE TABLE TMP.Bjmx (
+
+          jflx     CHAR(10) NOT NULL,
+          scbh     CHAR(12)         ,
+          xm       CHAR(40)         ,
+          dwbm     CHAR(5)  ,
+          dwmc     CHAR(40)         ,
+          zjq      DATE     NOT NULL,
+          sj1      DATE             ,
+          sj2      DATE             ,
+          jfgzjs   DECIMAL(12,2),
+          dwjn     DECIMAL(12,2),
+          grjn     DECIMAL(10,2)
+
+      )};
+      my $tmp_zgbd = qq{CREATE TABLE TMP.Zgbd (
+
+          scbh     CHAR(12) NOT NULL,
+          xm       CHAR(40) NOT NULL,
+          dwbm     CHAR(5)  NOT NULL,
+          bdsj     DATE     NOT NULL,
+          ydwbm    CHAR(5)  NOT NULL,
+          tsfl     CHAR(3)          ,
+          jfgzjs   DECIMAL(10,2)
+
+      )};
+      my $tmp_jfbl = qq{CREATE TABLE TMP.Jfbl (
+
+          sj1      DATE         NOT NULL,
+          sj2      DATE         NOT NULL,
+          dwbms    VARCHAR(255) NOT NULL,
+          dwbl     DECIMAL(5,4) NOT NULL,
+          grbl     DECIMAL(5,4) NOT NULL
+
+      )};
+
 #$dbh->do("SET NAMES utf8");
 
 # Documentation browser under "/perldoc"
+sub trans_code {
+	my ($mydata) = @_; #传入object
+  #print $mydata;
+	#my $data = $obj->slurp;
+	#print Dumper($mydata);
+	#$mydata = Encode::encode("UTF-8",Encode::decode("gbk",$mydata)) unless my $flag = Encode::is_utf8($mydata);
+	#print Dumper($mydata);
+  #unless (my $flag = Encode::is_utf8(Encode::decode('UTF-8',$mydata))){
+  #  print 'not utf8!',"\n";
+
+  #}
+  $mydata = Encode::encode("UTF-8",Encode::decode("gbk",$mydata));
+    $mydata =~ s/'//mg;
+    $mydata =~ s/"//mg;
+	#print Dumper($mydata);
+	return $mydata; # =～ 不是赋值语句，不写return 就变成了1
+}
+
+sub out_aoh_json{
+  my $ref_data = shift;
+  print Dumper($ref_data), "\n";
+  open my $fh1, "<", $ref_data;
+  my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
+  	my ($i,@arr);
+    $csv->header($fh1);
+  	while (my $row = $csv->getline_hr($fh1)) {
+      print Dumper($row),"\n";
+      push @arr,$row  ;
+  	#next if grep /dwbm/ ,@$row ;
+  	#$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
+  	$i++;
+  	if ($i==10) {
+      print "almost done!\n";
+      last;
+  	}
+
+     }
+     print Dumper(\@arr),"\n";
+     return \@arr;
+=pod
+  my $aoh = Text::CSV_XS::csv(in => $fh1,
+               headers => "auto");
+  my $line_count = @{$aoh};
+  #my %hash ;
+  return $aoh if $aoh;
+=cut
+
+=pod
+  if ($aoh && ($line_count>0)) {
+  %hash = (
+      total => $line_count,
+      rows => $aoh,
+
+  );
+} else {
+  %hash = (
+        total => 0,
+        rows => [],
+  );}
+return  \%hash;
+=cut
+}
+
+sub deal_with_csv {
+
+	my ($bxlx,$flag, $ref_data) = @_;
+	my $stmt = {
+         'zjmx' => sprintf("INSERT INTO %s.Zjmx(dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 12)),
+				 'jfmx' => sprintf("INSERT INTO %s.Jfmx(zjq,scbh,xm,dwbm,jfgzjs,grjn,dwhz,bzys,dzbz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 10)),
+				 'bjmx' => sprintf("INSERT INTO %s.Bjmx(jflx,scbh,xm,dwbm,dwmc,zjq,sj1,sj2,jfgzjs,dwjn,grjn) VALUES (%s)",$bxlx,join(",", ('?') x 11)),
+         'zgxx' => sprintf("INSERT INTO %s.Zgxx(scbh,sfzh,xm,xb,mz,csny,gzsj,dwbm,dwmc,jfgzjs,grjn,dwhz,zzsj,zzflbz,zzyy,aac001,aab001) VALUES (%s)",$bxlx,join(",", ('?') x 17)),
+         'zgbd' => sprintf("INSERT INTO %s.Zgbd(scbh,xm,dwbm,bdsj,ydwbm,tsfl,jfgzjs) VALUES (%s)",$bxlx,join(",", ('?') x 7)),
+         'jfbl' => sprintf("INSERT INTO %s.Jfbl(sj1,sj2,dwbms,dwbl,grbl) VALUES (%s)",$bxlx,join(",", ('?') x 5)),
+		};
+	my $sth = $dbh->prepare_cached($stmt->{$flag});
+
+	my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
+	open my $fh1, "<", $ref_data;
+
+	my $i;
+	while (my $row = $csv->getline ($fh1)) {
+
+	next if grep /dwbm/ ,@$row ;
+	$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
+	$i++;
+	if ($i%10000==0 && $i>10000) {
+			dbh->commit or die;
+	}
+   }
+
+$dbh->commit or die;
+
+close $fh1;
+return "向 $flag 插入了 $i 条数据 ";
+}
+
+post 'fake_upfile' => sub {
+	my $c = shift;
+	#my $file = $c->param('file');
+	#my $bxlx = 'TMP';
+	#my $type = $c->param('type');
+
+	return $c->render(text => 'File is too big.', status => 200)
+    if $c->req->is_limit_exceeded;
+   my $file = $c->param('file');
+   if (!$file) {
+     print "the file not exist!\n";
+    #return $c->redirect_to('upload_file') ;
+   }
+
+    my $data = $file->slurp();
+    $data = trans_code($data);
+    my $result = out_aoh_json(\$data);
+
+    $c->render(json =>  $result);
+
+};
+
+post 'upfile' => sub {
+	my $c = shift;
+	#my $file = $c->param('file');
+	my $bxlx = $c->param('bxlx');
+	my $type = $c->param('type');
+
+	return $c->render(text => 'File is too big.', status => 200)
+    if $c->req->is_limit_exceeded;
+    my $file = $c->param('file');
+#   {print "the f did not send!\n"; return $c->redirect_to('upload_file')} unless (my $file = $c->param('file'));
+    unless ($file) {
+      print 'File is null!\n';
+      return $c->redirect_to('upload_file');
+    }
+    $dbh->{AutoCommit} = 0;
+    my $data = $file->slurp();
+    $data = trans_code($data);
+    my $result = deal_with_csv($bxlx,$type,\$data);
+    $dbh->{AutoCommit} = 1;
+    $c->render(text =>  $result);
+
+};
 
 
 get 'upload_file' => sub {
@@ -28,6 +270,8 @@ get 'upload_file' => sub {
 
 
 };
+
+
 
 post 'upload' => sub{
 	my $c = shift;
@@ -38,42 +282,74 @@ post 'upload' => sub{
 
   # Process uploaded file
   return $c->redirect_to('upload_file')
-    unless my $example = $c->param('file1');
-  my $size = $example->size;
-  my $name = $example->filename;
-  
+    #unless (my $zjmx = $c->param('file1')) && (my $jfmx = $c->param('file2')) && (my $bjmx = $c->param('file3'));
+    unless my $zjmx = $c->param('file1');
+  #my $size = $example->size;
+  #my $name = $example->filename;
+
   #my $save_filename = 'd:/sites_up/tmp/test_tmpfile';
   #open my $fh , "+>" , $save_filename;
   #$example->move_to( $save_filename);
   #close $fh;
   $dbh->{AutoCommit} = 0;
+
+  #my $zjmx_data = trans_code($zjmx);
+
+  #my $jfmx_data = trans_code($jfmx->slurp());
+  #my $bjmx_data = trans_code($bjmx->slurp());
+
+
+  #my $res_jfmx = deal_with_csv($bxlx,'个人缴费明细',\$jfmx_data);
+  #my $res_bjmx = deal_with_csv($bxlx,'补缴明细',\$bjmx_data);
  my $stmt = sprintf("INSERT INTO %s.Zjmx(dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 12));
  my $sth = $dbh->prepare($stmt);
 #sub insert_with_csv{
-  my $data = $example->slurp();
-  $data = Encode::encode("UTF-8",Encode::decode("gbk",$data)) unless my $flag = Encode::is_utf8($data);
-  $data =~ s/'//mg;
-  $data =~ s/"//mg;
-  my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
-open my $fh1, "<", \$data;
+
+  my $data = $zjmx->slurp();
+  #print Dumper($data);
+  #my $data2 = $jfmx->slurp();
+  #my $data3 = $bjmx->slurp();
+  #dump $obj->slurp
+  #my $dump_1 = Data::Dumper::Dump($data);
+  $data = trans_code($data);
+  #$data = Encode::encode("UTF-8",Encode::decode("gbk",$data)) unless my $flag1 = Encode::is_utf8($data);
+  #$data =~ s/'//mg;
+  #$data =~ s/"//mg;
+  #print Dumper $data;
+=pod
+  $data2 = Encode::encode("UTF-8",Encode::decode("gbk",$data2)) unless my $flag2 = Encode::is_utf8($data2);
+  $data2 =~ s/'//mg;
+  $data2 =~ s/"//mg;
+
+  $data3 = Encode::encode("UTF-8",Encode::decode("gbk",$data3)) unless my $flag3 = Encode::is_utf8($data3);
+  $data3 =~ s/'//mg;
+  $data3 =~ s/"//mg;
+=cut
+	#my $d = $zjmx->slurp();
+	#my $data = trans_code($d);
+	my $res_1 = deal_with_csv($bxlx,'单位缴费明细',\$data);
+  #my $res_2 = deal_with_csv($bxlx,'个人缴费明细',\$data2);
+  #my $res_3 = deal_with_csv($bxlx,'补缴明细',\$data3);
+  #my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
+#open my $fh1, "<", \$data;
 #my @foo;
-my $i;
-while (my $row = $csv->getline ($fh1)) {
+#my $i;
+#while (my $row = $csv->getline ($fh1)) {
  #   push @foo, $row;
-  
-	next if grep /dwbm/ ,@$row ;
-	$sth->execute(@{$row} ) or die $DBI::errstr ;
-	$i++;
-	$dbh->commit if $i%10000==0 && $i>10000;
-   }
+
+#	next if grep /dwbm/ ,@$row ;
+#	$sth->execute(@{$row} ) or die $DBI::errstr ;
+#	$i++;
+#	$dbh->commit if $i%10000==0 && $i>10000;
+#  }
  #}
 =pod
  sub insert_with_while{
- 
+
  while(<$fh>){
  next if  /dwbm/ ;
 	#chomp;
-	
+
 	my @values = split /,/;
       $sth->execute(@values ) or die $DBI::errstr ;
 }
@@ -81,11 +357,11 @@ while (my $row = $csv->getline ($fh1)) {
 insert_with_csv();
 =cut
 
-$dbh->commit;
+#$dbh->commit;
 $dbh->{AutoCommit} = 1;
 #close $fh;
 
-  $c->render(text => "Thanks for uploading [$size] byte file <$name> and have saved it to tmp directory. ");
+  $c->render(json => {'file1' => $res_1});
    # $c->render(text => $example->slurp() );
 };
 

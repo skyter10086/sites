@@ -1,58 +1,329 @@
- 
-% layout 'lays' , title  => 'laysout';
-    <h2>Basic FileBox</h2>
-    <p>The filebox component represents a file field of the forms.</p>
-    <div style="margin:20px 0;"></div>
-    <div class="easyui-panel" title="Upload File" style="width:100%;max-width:400px;padding:30px 60px;">
-    <form id="ff" method="post" enctype="multipart/form-data">
-        <div style="margin-bottom:20px">
-        
-        <input  id="_bxlx" class="easyui-combobox" name="bxlx_select" style="width=100%" data-options="
-							data:[
-							{label:'养老保险',value:'A01'},
-							{label:'工伤保险',value:'A02'},
-							{label:'失业保险',value:'A03'},
-							{label:'医疗保险',value:'A04'},
-							{label:'生育保险',value:'A05'}
-							],
 
-							valueField:'value',
-							textField:'label',
-							panelHeight:'auto',
-							label: '保险类型:',
-							labelPosition: 'top'
-							">
-							
-            
-        </div>
-        <div style="margin-bottom:40px">
-            <input class="easyui-filebox" id="f1" name="file1" label="File1:" labelPosition="top" data-options="prompt:'Choose a file...'" style="width:100%">
-        </div>
-        
-        <div>
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:100%">Upload</a>
-        </div>
-       </form>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/qrcodejs-master/qrcode.js"></script>
+	<script  type="text/JavaScript" src="/Jqprint/jQuery.print.js" ></script>
+<title>laysout</title>
+</head>
+<body>
+  
+    <h2>征集数据上传</h2>  
+
+<div class="easyui-panel" title="文件上传表单" style="width:100%;max-width:800px;padding:30px 60px;">
+	<header>{文件必须为csv格式,编码GBK,起始行为字段名,数据顺序与字段名一致，空值用null或0替代}</header>
+	<div style="margin-bottom:30px">
+	<ul>
+		<li><b>单位征集明细[字段]:</b></li>
+		<p>(dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj)</p>
+		<li><b>个人征集明细[字段]:</b></li>
+		<p>(zjq,scbh,xm,dwbm,jfgzjs,grjn,dwhz,bzys,dzbz,dzsj)</p>
+		<li><b>补征明细[字段]:</b></li>
+		<p>(jflx,scbh,xm,dwbm,dwmc,zjq,sj1,sj2,jfgzjs,dwjn,grjn)</p>	
+	</ul>
+	</div>
+
+    <div style="margin-bottom:20px">
+		<label><b>选择险种:</b></label>
+		<label><input type="radio" value="A01"  name="selected" />养老保险</label>
+		<label><input type="radio" value="A02"  name="selected" />工伤保险</label>
+		<label><input type="radio" value="A03"  name="selected" />失业保险</label>
+		<label><input type="radio" value="A04"  name="selected" />医疗保险</label>
+		<label><input type="radio" value="A05"  name="selected" />生育保险</label>
+		
+
+	</div>
+
+	<div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="bjmx"  required="true" label="补征明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a id="btn_UpBjmx" href="javascript:void(0)"class="easyui-linkbutton" style="width:20%">校验</a>
     </div>
-    
-    %= javascript  begin
-		
-			$('#ff').form({
-				url:'/upload',
-			    onSubmit: function(){
-				// do some check
-				// return false to prevent submit;
-				},
-				success:function(data){
-					alert(data);
-				}
-			});
-		
-		
-		
-		
-		function submitForm() {
-            $('#ff').form('submit');
-        }
-    % end
+	
+    <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="zjmx"  required="true" label="单位征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a id="btn_UpZjmx" href="javascript:void(0)"class="easyui-linkbutton"  style="width:20%">校验</a>
+    </div>
 
+    <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="jfmx"  required="true" label="个人征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a id="btn_UpJfmx" href="javascript:void(0)"class="easyui-linkbutton" style="width:20%">校验</a>
+    </div>
+
+	
+	
+	<!--
+	
+    <div style="margin-bottom:40px">
+            <input class="easyui-filebox" id="bjmx"  required="true" label="补征明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a id="btn_UpBjmx" href="" class="easyui-linkbutton" style="width:20%">校验</a>
+    </div>
+	-->
+</div>	
+
+	<div id="jy_data" class="easyui-panel" title="校验数据展示"  style="width:100%;max-width:800px;padding:30px 60px;" closed="true">
+		<table id="dg" title="数据展示"></table>
+	    <a id="btn_send" class="easyui-linkbutton" href="javascript:void(0)"  style="display:none;">上传</a>
+		<a id="btn_clear" class="easyui-linkbutton" href="javascript:void(0)" style="display:none;">清空</a>
+	</div>
+
+<script>
+
+file_selector = '';
+
+  cols_jfmx = [[	
+	{field:'zjq',title:'征集期',width:60,align:'center'},
+	{field:'scbh',title:'手册编号',width:80,align:'center'},
+	{field:'xm',title:'姓名',width:60,align:'center'},
+	{field:'dwbm',title:'单位编码',width:50,align:'center'},
+	{field:'jfgzjs',title:'缴费基数',width:60,align:'right'},
+	{field:'grjn',title:'个人缴纳',width:60,align:'right'},
+	{field:'dwhz',title:'单位划转',width:60,align:'right'},
+	{field:'bzys',title:'补征月数',width:50,align:'right'},
+	{field:'dzbz',title:'到帐标志',width:50,align:'center'},
+	{field:'dzsj',title:'到帐时间',width:60,align:'center'}
+
+]];
+
+cols_zjmx = [[
+	{field:'zjq',title:'征集期',width:60,align:'center'},
+	{field:'dwbm',title:'单位编码',width:80,align:'center'},
+	{field:'dyyzrs',title:'参保人数',width:60,align:'center'},
+	{field:'dwjs',title:'单位基数',width:50,align:'center'},
+	{field:'grjs',title:'个人基数',width:60,align:'right'},
+	{field:'dwdy',title:'单位缴纳',width:60,align:'right'},
+	{field:'grdy',title:'个人缴纳',width:60,align:'right'},
+	{field:'dwbz',title:'单位补征',width:50,align:'right'},
+	{field:'grbz',title:'个人补征',width:50,align:'right'},
+	{field:'grbz',title:'个人补征',width:50,align:'right'},
+	{field:'dwsz',title:'单位实征',width:50,align:'right'},
+	{field:'grsz',title:'个人实征',width:50,align:'right'},
+	{field:'dzsj',title:'到帐时间',width:60,align:'center'}
+]];
+cols_bjmx = [[
+	{field:'jflx',title:'缴费类型',width:60,align:'center'},
+	{field:'scbh',title:'手册编号',width:80,align:'center'},
+	{field:'xm',title:'姓名',width:60,align:'center'},
+	{field:'dwbm',title:'单位编码',width:50,align:'center'},
+	{filed:'dwmc',title:'单位名称',width:60,align:'center'},
+	{field:'zjq',title:'征集期',width:60,align:'right'},
+	{field:'sj1',title:'起始时间',width:60,align:'right'},
+	{field:'sj2',title:'终止时间',width:60,align:'right'},
+	{field:'jfgzjs',title:'缴费基数',width:50,align:'right'},
+	{field:'dwjn',title:'单位补征',width:50,align:'center'},
+	{field:'grjn',title:'个人补征',width:60,align:'center'}
+]];
+
+
+
+function valid_filerequired(selector,sizeMax){
+	if ($(selector).filebox('getText')){
+		var f = $(selector).next().find(':file').get(0).files[0];
+		fileSize=Math.round(f.size/1024*100)/100;
+		if (fileSize == 0) {
+			$(selector).filebox('clear');
+			$.messager.alert('注意','文件大小不能为空！');
+		}else if (fileSize >= sizeMax){
+			$(selector).filebox('clear');
+			$.messager.alert('注意','文件太大！已超过'+sizeMax+'kb.');
+		}else{
+
+		}
+	}
+}
+
+
+function valid_combobox(selector){
+	if ($(selector).combobox('getValue') == ''){
+		$(selector).combobox('clear');
+		$.messager.alert('注意！','请选择选项内的文本，其他输入无效！');
+	}
+}
+
+function valid_filext(selector,pattern){
+	if ($(selector).filebox('getText')){
+		var filename = $(selector).filebox('getText');
+				//alert(filename);
+		var re =new RegExp("\." + pattern + "$","gi")
+		if (!re.test(filename)){
+			$.messager.alert('注意！','文件格式为必须为'+pattern);
+			$(selector).filebox('clear');
+		}
+	}
+}
+
+ d_no = function do_nothing(res){
+	 al_result(res);
+
+ };
+/*
+ bzys	0
+ dwbm	A_JY
+ dwhz	0.0
+ dzbz	T
+ dzsj	2016-05-01
+ grjn	19.71
+ jfgzjs	2464.00
+ scbh	08101001648
+ xm	李士杰
+ zjq	2016-05-01
+*/
+ 
+
+$('#btn_send').click(function(){
+		uploadFile(file_selector,'csv',2000,'upfile',al_result);
+		$('#btn_clear').hide();
+		$('#btn_send').hide();
+		//$('#dg').datagrid('loadData',{total:0,rows:[]});
+		$('#dg').hide();
+		$('#jy_data').panel('close');
+		//$('#dg').datagrid('loadData',{total: 0, rows: []});
+		
+		/*
+		d_no([{'zjq':'2016-05-01','xm':'李世界','scbh':'08101001648','jfgzjs':2464.00,
+		'grjn':19.71,'dzsj':'2016-05-01','dzbz':'T','dwhz':0.0,'dwbm':'A_JY','bzys':0}]);*/
+});
+
+$('#btn_clear').click(function(){
+		//uploadFile(file_selector,'csv',2000,'upfile',al_result);
+		$('#btn_send').hide();
+		$('#btn_clear').hide();
+		//$('#dg').datagrid('loadData',{total:0,rows:[]});
+		$('#dg').hide();
+		$('#jy_data').panel('close');
+		//$('#dg').datagrid('loadData',{total: 0, rows: []});
+		
+		/*
+		d_no([{'zjq':'2016-05-01','xm':'李世界','scbh':'08101001648','jfgzjs':2464.00,
+		'grjn':19.71,'dzsj':'2016-05-01','dzbz':'T','dwhz':0.0,'dwbm':'A_JY','bzys':0}]);*/
+});
+
+
+$('#btn_UpZjmx').click(function(){
+	if($('#btn_send').is(":hidden")){
+		file_selector = '#zjmx';
+		uploadFile('#zjmx','csv',2000,'fake_upfile',p_show_data_zjmx);
+	}else{
+		$.messager.alert('注意!','请先把上次的数据上传或清空！');
+	}
+});
+
+$('#btn_UpJfmx').click(function(){
+	//hide_btn();
+	if($('#btn_send').is(":hidden")){
+		file_selector = $(this).prop('id');
+		uploadFile('#jfmx','csv',2000,'fake_upfile',p_show_data_jfmx);
+	}else{
+		$.messager.alert('注意!','请先把上次的数据上传或清空！');
+	}
+});
+
+$('#btn_UpBjmx').click(function(){
+	if($('#btn_send').is(":hidden")){
+		file_selector = '#bjmx';
+		uploadFile('#bjmx','csv',2000,'fake_upfile',p_show_data_bjmx);
+	}else{
+		$.messager.alert('注意!','请先把上次的数据上传或清空！');
+	}
+});
+
+al_result = function alert_res(res){
+	$.messager.alert('上传结果:',res);
+	
+};
+
+function creat_btn(selector,text){
+
+	$(selector).linkbutton({
+    iconCls: 'icon-default',
+		text:text,
+
+});
+}
+
+function enable_btn(selector){
+	$(selector).linkbutton('enable');
+}
+
+function hide_btn(selector){
+	$(selector).linkbutton('disable');
+
+}
+
+
+function show_data(res,cols){
+	
+	$('#dg').datagrid({
+		pagination : true,
+        rownumbers : true,
+		pageSize : 10,
+        idField:"id",
+		data: res,
+		columns:cols
+});
+	$('#btn_send').show();
+	$('#btn_clear').show();
+$('#jy_data').panel('open');
+
+}
+
+function pre_show_data(cols){
+  return function(res){
+     return show_data(res,cols);
+   };
+}
+
+ p_show_data_jfmx = pre_show_data(cols_jfmx);
+ p_show_data_zjmx = pre_show_data(cols_zjmx);
+ p_show_data_bjmx = pre_show_data(cols_bjmx);
+
+
+function uploadFile(f_selector,pattern,sizeMax,url,proc){
+	var bxlx = $("input[name='selected']").filter(":checked").val();
+	var type = $(f_selector).prop('id');
+	if (!bxlx) {
+		$.messager.alert("注意","请选择险种类型！");
+	} else {
+		valid_filext(f_selector,pattern);
+		valid_filerequired(f_selector,sizeMax);
+		if ($(f_selector).filebox('getText')){
+			var f = $(f_selector).next().find(':file').get(0).files[0];
+			var fm = new FormData();
+			fm.append('file',f);
+			fm.append('bxlx',bxlx);
+			fm.append('type',type);
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: fm,
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					//$.messager.alert('上传结果:',result);
+					
+					proc(result);
+					
+					
+			  }
+      });
+		}
+	}
+}
+
+
+
+
+
+
+</script>
+<script  type="text/JavaScript" src="../get_json.js" ></script>
+<script  type="text/JavaScript" src="../chineseStr.js" ></script>
+<script  type="text/JavaScript" src="../field_fill.js" ></script>
+
+</body>
+</html>

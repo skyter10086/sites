@@ -1,0 +1,140 @@
+
+% layout 'lays' , title  => 'laysout';
+    <div id= "upload" align="center">
+    <h2>征集数据上传</h2>
+    <div>
+    <p>选择与险种对应的征集明细数据文件，必须是CSV格式，第一行为字段名，以','分隔各个字段和数据。文本值可以用单、双引号括注，也可以不加引号。编码必须为utf8或者gbk，数据格式为:</p>
+    <p><b>单位征集明细--[dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj]</b></p>
+	<p><b>个人征集明细--                  [zjq,scbh,xm,dwbm,jfgzjs,grjn,dwhz,bzys,dzbz,dzsj]</b></p>
+	<p><b>补征明细    --               [jflx,scbh,xm,dwbm,dwmc,zjq,sj1,sj2,jfgzjs,dwjn,grjn]</b></p>
+	<div>
+    <div style="margin:20px 0;"></div>
+    <div class="easyui-panel" title="Upload File" style="width:100%;max-width:800px;padding:30px 60px;">
+    <form id="ff" method="post" enctype="multipart/form-data">
+        <div style="margin-bottom:20px">
+
+        <input  id="input_bxlx" name="bxlx_select" style="width=100%">
+
+
+        </div>
+
+        <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="f1" name="file1" required="true" label="单位征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...'" style="width:100%">
+            <span id="file1"></span>
+        </div>
+<!--
+        <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="f2" name="file2" required="true" label="个人征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...'" style="width:100%">
+        </div>
+
+        <div style="margin-bottom:40px">
+            <input class="easyui-filebox" id="f3" name="file3"  required="true" label="补征明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...'" style="width:100%">
+        </div>
+-->
+        <div>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:100%">Upload</a>
+        </div>
+       </form>
+    </div>
+    </div>
+    %= javascript  begin
+    
+			function valid_filerequired(file_id,sizeMax){
+				if ($(file_id).filebox('getText')){
+				var f = $(file_id).next().find(':file').get(0).files[0];
+				fileSize=Math.round(f.size/1024*100)/100;
+				if (fileSize == 0) {
+					$(file_id).filebox('clear');
+					$.messager.alert('注意','文件大小为空！');
+				}else if (fileSize >= sizeMax){
+					$(file_id).filebox('clear');
+					$.messager.alert('注意','文件太大！');
+				}else{
+				//$.messager.alert('提示','文件大小检验通过！');
+				}
+				}
+			}
+			
+    
+			function valid_bxlx(bxlx_id){
+				if ($(bxlx_id).combobox('getValue') == ''){$(bxlx_id).combobox('clear');}
+			}
+
+    		function valid_filext(fileid,pattern){
+				if ($(fileid).filebox('getText')){
+				var filename = $(fileid).filebox('getText');
+				//alert(filename);
+				var re =new RegExp("\." + pattern + "$","gi")
+				
+		       if (!re.test(filename)){
+			       $(fileid).filebox('clear');
+			       
+		       }
+		       }
+			   
+			
+			}
+
+			$('#ff').form({
+				url:'/upload',
+			    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+				//if ($('#input_bxlx').combobox('getValue') == ''){$('#input_bxlx').combobox('clear');}
+				/*
+				var filename = $('#f1').filebox('getText');
+				//alert(filename);
+				var re =new RegExp("\." + "csv" + "$","gi");
+				//alert(re.test(filename));
+				if (!re.test(filename)){
+			       $('#f1').filebox('clear');
+			    }
+				*/
+				//验证输入
+				valid_bxlx('#input_bxlx');
+		       valid_filext('#f1','csv');
+		       valid_filerequired('#f1',550);
+		       /*
+		       valid_filext('#f2','csv');
+		       valid_filerequired('#f2',550);
+		       valid_filext('#f3','csv');
+		       valid_filerequired('#f3',550);
+		       */
+				var isValid = $(this).form('validate');
+				//alert($('#input_bxlx').combobox('getValue'));
+				if (!isValid) {
+						//$.messager.progress('close');	// hide progress bar while the form is invalid
+						$.messager.alert('注意','提交的数据不合法，请检查后重新提交!');
+					}
+					return isValid;
+				},
+				success:function(data){
+					var value1 = JSON.parse(data);
+					$('#file1').val(value1['file1']);
+				}
+			});
+			
+
+
+            $('#input_bxlx').combobox({
+							data:[
+							{label:'养老保险',value:'A01'},
+							{label:'工伤保险',value:'A02'},
+							{label:'失业保险',value:'A03'},
+							{label:'医疗保险',value:'A04'},
+							{label:'生育保险',value:'A05'}
+							],
+							required: true,
+							validateType:'selectValueRequired',
+							valueField:'value',
+							textField:'label',
+							panelHeight:'auto',
+							label: '保险类型:',
+							labelPosition: 'top'
+			});
+//$('#input_bxlx').combobox('setValue','A0');
+//alert($('#input_bxlx').combobox('getValue'));
+		function submitForm() {
+            $('#ff').form('submit');
+        }
+    % end
