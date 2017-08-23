@@ -270,6 +270,20 @@ function chkTrue(variable1){
 		return true;
 	}
 }
+function valid_combobox(selector){
+	var opt_ = $(selector).combobox('options');
+	var data_ = $(selector).combobox('getData');
+	var val_ = $(selector).combobox('getValue');
+	_b = false;	
+	for (var i = 0; i < data_.length; i++) {  
+        if (data_[i][opt_.valueField] == val_) {  
+            _b=true;  
+            break;  
+        }  
+    }  
+    return _b;  
+	
+}
 	bx = '';
 	xz = {
 		'A01':'养老保险',
@@ -298,13 +312,14 @@ $("#btnClearAll").click(function(){
 $("#btnLoad").click(function(){
 
 	var key = $("input[name='selected']:checked").val();
-	var val = $("#domain").val();
-	var zjq = $('#zhjq').combobox('getValue');
-	var bxlx = $("#_bxlx").val();
-	bx = bxlx;
+	
 //$('#test').text(chkTrue(val));
 
-	if(chkTrue(key) && chkTrue(val) && chkTrue(zjq) && chkTrue(bxlx)){
+	if(chkTrue(key) && valid_combobox('#domain')  && valid_combobox('#zhjq') && valid_combobox('#_bxlx')){
+	var val =  $('#domain').combobox('getValue');
+	var zjq = $('#zhjq').combobox('getValue');
+	var bxlx = $("#_bxlx").combobox('getValue');
+	bx = bxlx;
 	$("#tt").datagrid('loadData', { total: 0, rows: [] });
 	$("#tt").datagrid('load',{
 		'key':key,
@@ -314,7 +329,7 @@ $("#btnLoad").click(function(){
 
 	});
 }else {
-		alert('参数不足，请重新输入!');
+		alert('参数不足或有误，请重新输入!');
 		$("#btnReset").click();
 	}
 
