@@ -15,12 +15,12 @@ use Data::Dumper qw(Dumper);
       my $statement_a = qq{ATTACH DATABASE '../SQL_Backup/A01.db' as 'A01'};
       my $statement_b = qq{ATTACH DATABASE '../SQL_Backup/A02.db' as 'A02'};
       my $statement_c = qq{ATTACH DATABASE '../SQL_Backup/DW.db' as 'DW'};
-		  my $statement_d = qq{ATTACH DATABASE '../SQL_Backup/A03.db' as 'A03'};
+      my $statement_d = qq{ATTACH DATABASE '../SQL_Backup/A03.db' as 'A03'};
       my $statement_t = qq{ATTACH DATABASE ':memory:' AS 'TMP'};
       my $rows = $dbh->do($statement_a)           or die $dbh->errstr;
       $rows =   $dbh->do($statement_b)           or die $dbh->errstr;
       $rows = $dbh->do($statement_c)           or die $dbh->errstr;
-	    $rows = $dbh->do($statement_d)           or die $dbh->errstr;
+      $rows = $dbh->do($statement_d)           or die $dbh->errstr;
       $rows = $dbh->do($statement_t)           or die $dbh->errstr;
 
     #  $rows = $dbh->do($tmp_zjmx)           or die $dbh->errstr;
@@ -31,7 +31,7 @@ use Data::Dumper qw(Dumper);
     #  $rows = $dbh->do($tmp_jfbl)           or die $dbh->errstr;
 
       my $tmp_zjmx = qq{CREATE TABLE TMP.Zjmx (
-      	  id     INTEGER         PRIMARY KEY AUTOINCREMENT,
+          id     INTEGER         PRIMARY KEY AUTOINCREMENT,
           zjq      DATE  NOT NULL,
           dwbm     CHAR(4) NOT NULL,
           dyyzrs   INT NOT NULL,
@@ -123,12 +123,12 @@ use Data::Dumper qw(Dumper);
 
 # Documentation browser under "/perldoc"
 sub trans_code {
-	my ($mydata) = @_; #传入object
+  my ($mydata) = @_; #传入object
   #print $mydata;
-	#my $data = $obj->slurp;
-	#print Dumper($mydata);
-	#$mydata = Encode::encode("UTF-8",Encode::decode("gbk",$mydata)) unless my $flag = Encode::is_utf8($mydata);
-	#print Dumper($mydata);
+  #my $data = $obj->slurp;
+  #print Dumper($mydata);
+  #$mydata = Encode::encode("UTF-8",Encode::decode("gbk",$mydata)) unless my $flag = Encode::is_utf8($mydata);
+  #print Dumper($mydata);
   #unless (my $flag = Encode::is_utf8(Encode::decode('UTF-8',$mydata))){
   #  print 'not utf8!',"\n";
 
@@ -136,8 +136,10 @@ sub trans_code {
   $mydata = Encode::encode("UTF-8",Encode::decode("gbk",$mydata));
     $mydata =~ s/'//mg;
     $mydata =~ s/"//mg;
-	#print Dumper($mydata);
-	return $mydata; # =～ 不是赋值语句，不写return 就变成了1
+    $mydata =~ s/[^\S\r\n]+//mg; # 清除 非空字符、换行符号以外的字符 ~~ 非换行空白符号
+    print $mydata,"\n";
+  #print Dumper($mydata);
+  return $mydata; # =～ 不是赋值语句，不写return 就变成了1
 }
 
 sub out_aoh_json{
@@ -145,18 +147,18 @@ sub out_aoh_json{
   #print Dumper($ref_data), "\n";
   open my $fh1, "<", $ref_data;
   my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
-  	my ($i,@arr);
+    my ($i,@arr);
     $csv->header($fh1);
-  	while (my $row = $csv->getline_hr($fh1)) {
+    while (my $row = $csv->getline_hr($fh1)) {
       #print Dumper($row),"\n";
       push @arr,$row  ;
-  	#next if grep /dwbm/ ,@$row ;
-  	#$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
-  	$i++;
-  	if ($i==10) {
+    #next if grep /dwbm/ ,@$row ;
+    #$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
+    $i++;
+    if ($i==10) {
       print "almost done!\n";
       last;
-  	}
+    }
 
      }
      print Dumper(\@arr),"\n";
@@ -187,29 +189,29 @@ return  \%hash;
 
 sub deal_with_csv {
 
-	my ($bxlx,$flag, $ref_data) = @_;
-	my $stmt = {
+  my ($bxlx,$flag, $ref_data) = @_;
+  my $stmt = {
          'zjmx' => sprintf("INSERT INTO %s.Zjmx(dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 12)),
-				 'jfmx' => sprintf("INSERT INTO %s.Jfmx(zjq,scbh,xm,dwbm,jfgzjs,grjn,dwhz,bzys,dzbz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 10)),
-				 'bjmx' => sprintf("INSERT INTO %s.Bjmx(jflx,scbh,xm,dwbm,dwmc,zjq,sj1,sj2,jfgzjs,dwjn,grjn) VALUES (%s)",$bxlx,join(",", ('?') x 11)),
+         'jfmx' => sprintf("INSERT INTO %s.Jfmx(zjq,scbh,xm,dwbm,jfgzjs,grjn,dwhz,bzys,dzbz,dzsj) VALUES (%s)",$bxlx,join(",", ('?') x 10)),
+         'bjmx' => sprintf("INSERT INTO %s.Bjmx(jflx,scbh,xm,dwbm,dwmc,zjq,sj1,sj2,jfgzjs,dwjn,grjn) VALUES (%s)",$bxlx,join(",", ('?') x 11)),
          'zgxx' => sprintf("INSERT INTO %s.Zgxx(scbh,sfzh,xm,xb,mz,csny,gzsj,dwbm,dwmc,jfgzjs,grjn,dwhz,zzsj,zzflbz,zzyy,aac001,aab001) VALUES (%s)",$bxlx,join(",", ('?') x 17)),
          'zgbd' => sprintf("INSERT INTO %s.Zgbd(scbh,xm,dwbm,bdsj,ydwbm,tsfl,jfgzjs) VALUES (%s)",$bxlx,join(",", ('?') x 7)),
          'jfbl' => sprintf("INSERT INTO %s.Jfbl(sj1,sj2,dwbms,dwbl,grbl) VALUES (%s)",$bxlx,join(",", ('?') x 5)),
-		};
-	my $sth = $dbh->prepare_cached($stmt->{$flag});
+    };
+  my $sth = $dbh->prepare_cached($stmt->{$flag});
 
-	my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
-	open my $fh1, "<", $ref_data;
+  my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
+  open my $fh1, "<", $ref_data;
 
-	my $i;
-	while (my $row = $csv->getline ($fh1)) {
+  my $i;
+  while (my $row = $csv->getline ($fh1)) {
 
-	next if grep /dwbm/ ,@$row ;
-	$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
-	$i++;
-	if ($i%10000==0 && $i>10000) {
-			dbh->commit or die;
-	}
+  next if grep /dwbm/ ,@$row ;
+  $sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
+  $i++;
+  if ($i%10000==0 && $i>10000) {
+      dbh->commit or die;
+  }
    }
 
 $dbh->commit or die;
@@ -219,12 +221,12 @@ return "向 $flag 插入了 $i 条数据 ";
 }
 
 post 'fake_upfile' => sub {
-	my $c = shift;
-	#my $file = $c->param('file');
-	#my $bxlx = 'TMP';
-	#my $type = $c->param('type');
+  my $c = shift;
+  #my $file = $c->param('file');
+  #my $bxlx = 'TMP';
+  #my $type = $c->param('type');
 
-	return $c->render(text => 'File is too big.', status => 200)
+  return $c->render(text => 'File is too big.', status => 200)
     if $c->req->is_limit_exceeded;
    my $file = $c->param('file');
    if (!$file) {
@@ -241,12 +243,12 @@ post 'fake_upfile' => sub {
 };
 
 post 'upfile' => sub {
-	my $c = shift;
-	#my $file = $c->param('file');
-	my $bxlx = $c->param('bxlx');
-	my $type = $c->param('type');
+  my $c = shift;
+  #my $file = $c->param('file');
+  my $bxlx = $c->param('bxlx');
+  my $type = $c->param('type');
 
-	return $c->render(text => 'File is too big.', status => 200)
+  return $c->render(text => 'File is too big.', status => 200)
     if $c->req->is_limit_exceeded;
     my $file = $c->param('file');
 #   {print "the f did not send!\n"; return $c->redirect_to('upload_file')} unless (my $file = $c->param('file'));
@@ -274,8 +276,8 @@ get 'upload_file' => sub {
 
 
 post 'upload' => sub{
-	my $c = shift;
-	my $bxlx = $c->param('bxlx_select');
+  my $c = shift;
+  my $bxlx = $c->param('bxlx_select');
   # Check file size
   return $c->render(text => 'File is too big.', status => 200)
     if $c->req->is_limit_exceeded;
@@ -325,9 +327,9 @@ post 'upload' => sub{
   $data3 =~ s/'//mg;
   $data3 =~ s/"//mg;
 =cut
-	#my $d = $zjmx->slurp();
-	#my $data = trans_code($d);
-	my $res_1 = deal_with_csv($bxlx,'单位缴费明细',\$data);
+  #my $d = $zjmx->slurp();
+  #my $data = trans_code($d);
+  my $res_1 = deal_with_csv($bxlx,'单位缴费明细',\$data);
   #my $res_2 = deal_with_csv($bxlx,'个人缴费明细',\$data2);
   #my $res_3 = deal_with_csv($bxlx,'补缴明细',\$data3);
   #my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
@@ -348,9 +350,9 @@ post 'upload' => sub{
 
  while(<$fh>){
  next if  /dwbm/ ;
-	#chomp;
+  #chomp;
 
-	my @values = split /,/;
+  my @values = split /,/;
       $sth->execute(@values ) or die $DBI::errstr ;
 }
 }
@@ -376,78 +378,78 @@ get '/test_looptab' => sub {
 
 get '/dwfl/dwbms' => sub {
   my $c = shift;
-	my $list = list_dwbm();
-	$c->render(json => $list);
+  my $list = list_dwbm();
+  $c->render(json => $list);
 };
 
 get '/dwfl/dwfls' => sub {
-	my $c = shift;
-	my $list = list_dwfl();
-	$c->render(json => $list);
+  my $c = shift;
+  my $list = list_dwfl();
+  $c->render(json => $list);
 
 };
 get '/zjqs/:bxlx' => sub {
-	my $c = shift;
-	my $bxlx = $c->param('bxlx');
-	my $list = list_zjq($bxlx);
-	$c->render(json => $list);
+  my $c = shift;
+  my $bxlx = $c->param('bxlx');
+  my $list = list_zjq($bxlx);
+  $c->render(json => $list);
 
 };
 sub list_zjq {
-	my $bx = shift;
+  my $bx = shift;
   my $stmt = {
-	  'A01' => qq{ SELECT zjq FROM A01.zjmx WHERE length(trim(zjq))>0 group by zjq},
-	  'A02' => qq{ SELECT zjq FROM A02.zjmx WHERE length(trim(zjq))>0 group by zjq},
-	   'A03' => qq{ SELECT zjq FROM A03.zjmx WHERE length(trim(zjq))>0 group by zjq},
-	    'A04' => qq{ SELECT zjq FROM A04.zjmx WHERE length(trim(zjq))>0 group by zjq},
-	  };
-	  my $st = $stmt->{$bx};
-	my $sth = $dbh->prepare($st);
-	$sth->execute() or die $DBI::errstr;
-	my $zjq ;
-	$sth->bind_columns(\$zjq);
-	my $i =0;
-	my $arr = [];
-	while ($sth->fetch) {
-		$i++;
-		push @{$arr} , {id=> $i, text => $zjq} ;
-	}
+    'A01' => qq{ SELECT zjq FROM A01.zjmx WHERE length(trim(zjq))>0 group by zjq},
+    'A02' => qq{ SELECT zjq FROM A02.zjmx WHERE length(trim(zjq))>0 group by zjq},
+     'A03' => qq{ SELECT zjq FROM A03.zjmx WHERE length(trim(zjq))>0 group by zjq},
+      'A04' => qq{ SELECT zjq FROM A04.zjmx WHERE length(trim(zjq))>0 group by zjq},
+    };
+    my $st = $stmt->{$bx};
+  my $sth = $dbh->prepare($st);
+  $sth->execute() or die $DBI::errstr;
+  my $zjq ;
+  $sth->bind_columns(\$zjq);
+  my $i =0;
+  my $arr = [];
+  while ($sth->fetch) {
+    $i++;
+    push @{$arr} , {id=> $i, text => $zjq} ;
+  }
 
-	return $arr;
+  return $arr;
 }
 
 sub list_dwfl {
 
-	my $stmt = qq{ SELECT dwfl FROM DW.dwfl WHERE length(trim(dwfl))>0 group by dwfl};
-	my $sth = $dbh->prepare($stmt);
-	$sth->execute() or die $DBI::errstr;
-	my $dwfl ;
-	$sth->bind_columns(\$dwfl);
-	my $i =0;
-	my $arr = [];
-	while ($sth->fetch) {
-		$i++;
-		push @{$arr} , {id=> $i, text => $dwfl} ;
-	}
+  my $stmt = qq{ SELECT dwfl FROM DW.dwfl WHERE length(trim(dwfl))>0 group by dwfl};
+  my $sth = $dbh->prepare($stmt);
+  $sth->execute() or die $DBI::errstr;
+  my $dwfl ;
+  $sth->bind_columns(\$dwfl);
+  my $i =0;
+  my $arr = [];
+  while ($sth->fetch) {
+    $i++;
+    push @{$arr} , {id=> $i, text => $dwfl} ;
+  }
 
-	return $arr;
-	}
+  return $arr;
+  }
   sub list_dwbm {
 
-  	my $stmt = qq{ SELECT dwbm FROM DW.dwfl WHERE length(trim(dwbm))>0 group by dwbm order by dwbm};
-  	my $sth = $dbh->prepare($stmt);
-  	$sth->execute() or die $DBI::errstr;
-  	my $dwbm;
-  	$sth->bind_columns(\$dwbm);
-  	my $i =0;
-  	my $arr = [];
-  	while ($sth->fetch) {
-  		$i++;
-  		push @{$arr} , {id=> $i, text => $dwbm} ;
-  	}
+    my $stmt = qq{ SELECT dwbm FROM DW.dwfl WHERE length(trim(dwbm))>0 group by dwbm order by dwbm};
+    my $sth = $dbh->prepare($stmt);
+    $sth->execute() or die $DBI::errstr;
+    my $dwbm;
+    $sth->bind_columns(\$dwbm);
+    my $i =0;
+    my $arr = [];
+    while ($sth->fetch) {
+      $i++;
+      push @{$arr} , {id=> $i, text => $dwbm} ;
+    }
 
-  	return $arr;
-  	}
+    return $arr;
+    }
 
 
 get '/search' => sub {
@@ -457,53 +459,53 @@ get '/search' => sub {
 };
 
 get '/dwfl/dwbm/:dwbm' => sub {
-	my $c = shift;
-	my $dwbm = $c->param('dwbm');
-	$c->render(json => query_dwbm($dwbm));
+  my $c = shift;
+  my $dwbm = $c->param('dwbm');
+  $c->render(json => query_dwbm($dwbm));
 
-	};
+  };
 
 
 get '/table/:bxlx/:id' => sub {
-	my $c = shift;
+  my $c = shift;
   my $bxlx = $c->param('bxlx');
-	my $id = $c->param('id');
-	#my $dwbm = $c->param('dwbm');
-	#my $dwmc = $c->param('dwmc');
-	#my $dwjn =
-	#my $href = query_zjid('id',$id);
-	#CORE::dump($href);
-	#my $dwbm = $href->{'dwbm'};
-	#my $zjq = $href->{'zjq'};
-	$c->stash(id => $id);
+  my $id = $c->param('id');
+  #my $dwbm = $c->param('dwbm');
+  #my $dwmc = $c->param('dwmc');
+  #my $dwjn =
+  #my $href = query_zjid('id',$id);
+  #CORE::dump($href);
+  #my $dwbm = $href->{'dwbm'};
+  #my $zjq = $href->{'zjq'};
+  $c->stash(id => $id);
   $c->stash(bxlx =>$bxlx);
-	#$c->stash(
-	#	dwbm => $href->{dwbm},
-	#	zjq => $href->{zjq},
-	#	dyyzrs => $href->{dyyzrs},
-	#	dwjs => $href->{dwjs},
-	#	grjs => $href->{grjs},
-	#	dwdy => $href->{dwdy},
-	#	grdy => $href->{grdy},
-	#	dwbz => $href->{dwbz},
-	#	grbz => $href->{grbz},
-	#	dwsz => $href->{dwsz},
-	#	grsz => $href->{grsz},
-	#	dzsj => $href->{dzsj},
+  #$c->stash(
+  #	dwbm => $href->{dwbm},
+  #	zjq => $href->{zjq},
+  #	dyyzrs => $href->{dyyzrs},
+  #	dwjs => $href->{dwjs},
+  #	grjs => $href->{grjs},
+  #	dwdy => $href->{dwdy},
+  #	grdy => $href->{grdy},
+  #	dwbz => $href->{dwbz},
+  #	grbz => $href->{grbz},
+  #	dwsz => $href->{dwsz},
+  #	grsz => $href->{grsz},
+  #	dzsj => $href->{dzsj},
 
-	#);
-	$c->render(template => 'table');
+  #);
+  $c->render(template => 'table');
 
 };
 
 get '/zjmx/:bxlx/:id' => sub {
-	my $c = shift;
-	my $id = $c->param('id');
+  my $c = shift;
+  my $id = $c->param('id');
   my $bxlx = $c->param('bxlx');
-	my $href = query_zjid($bxlx,$id);
-	$c->render(json => $href );
+  my $href = query_zjid($bxlx,$id);
+  $c->render(json => $href );
 
-	};
+  };
 
 post '/query' => sub {
     my $c = shift;
@@ -545,120 +547,120 @@ get '/' => sub {
     $c->render(template => 'layout');
 };
 get '/block_search' => sub{
-	my $c = shift;
-	$c->stash(head_name => '职工参保',description => '新增或恢复参保',search_name => 'scbh',search_caption => '手册编号');
+  my $c = shift;
+  $c->stash(head_name => '职工参保',description => '新增或恢复参保',search_name => 'scbh',search_caption => '手册编号');
     $c->render(template => 'search_block');
 };
 
 get '/frame/zgcb' => sub {
-	my $c = shift;
-	#$c->stash(head_name => '职工参保',description => '新增或恢复参保',search_name => 'scbh',search_caption => '手册编号');
-	$c->render(template => 'zgcb');
-	};
+  my $c = shift;
+  #$c->stash(head_name => '职工参保',description => '新增或恢复参保',search_name => 'scbh',search_caption => '手册编号');
+  $c->render(template => 'zgcb');
+  };
 
 get '/get_tree' => sub {
-	my $c = shift;
-	my $arr_ref = [
-		{
-			text => "职工管理",
-			children => [
-				{   text => "职工参保",
-				    attributes => {url => "/frame/zgcb"},
-				},
-				{   text => "职工中断",
-					attributes => {url => "/frame/zgzd"},
-				},
-				{   text => "职工内调",
-					attributes => {url => '/frame/zgnd'},
-				},
-				{   text => "职工基本信息变更",
-					attributes => {url => "frame/zgxxbg"},
-				},
-			],
-		},
+  my $c = shift;
+  my $arr_ref = [
+    {
+      text => "职工管理",
+      children => [
+        {   text => "职工参保",
+            attributes => {url => "/frame/zgcb"},
+        },
+        {   text => "职工中断",
+          attributes => {url => "/frame/zgzd"},
+        },
+        {   text => "职工内调",
+          attributes => {url => '/frame/zgnd'},
+        },
+        {   text => "职工基本信息变更",
+          attributes => {url => "frame/zgxxbg"},
+        },
+      ],
+    },
 
-		{
-			text => "险种管理",
-			children => [
-			    {   text => "征集比例",
-					attributes => {url => '/frame/zjbl'},
-				},
-				{   text => "单位基数",
-					attributes => {url => '/frame/dwjs'},
-				},
-				{   text => "个人基数",
-					attributes => {url => '/frame/grjs'},
-				},
-			],
-		},
+    {
+      text => "险种管理",
+      children => [
+          {   text => "征集比例",
+          attributes => {url => '/frame/zjbl'},
+        },
+        {   text => "单位基数",
+          attributes => {url => '/frame/dwjs'},
+        },
+        {   text => "个人基数",
+          attributes => {url => '/frame/grjs'},
+        },
+      ],
+    },
 
-		{
-			text => "补征管理",
-			children => [
-			{   text => "单位补征",
-				attributes => {url => '/frame/dwbz'},
-			},
-			{   text => "个人补征",
-				attributes => {url => '/frame/grbz'},
-			},
-			],
-		},
+    {
+      text => "补征管理",
+      children => [
+      {   text => "单位补征",
+        attributes => {url => '/frame/dwbz'},
+      },
+      {   text => "个人补征",
+        attributes => {url => '/frame/grbz'},
+      },
+      ],
+    },
 
-		{
-			text => "征集数据",
-			children => [
-				{   text => "数据上传",
-					attributes => {url => '/upload_file'},
-				},
-				{   text => "征集单查询及打印",
-					attributes => {url => '/test_looptab'},
-				},
-			],
-		},
+    {
+      text => "征集数据",
+      children => [
+        {   text => "数据上传",
+          attributes => {url => '/upload_file'},
+        },
+        {   text => "征集单查询及打印",
+          attributes => {url => '/test_looptab'},
+        },
+      ],
+    },
 
-	];
-	$c->render(json => $arr_ref);
+  ];
+  $c->render(json => $arr_ref);
 };
 
 post '/service/zg/xcb' => sub {
-	my $c = shift;
+  my $c = shift;
 
 
 
-	};
+  };
 
 get '/test' => sub {
-	my $c = shift;
-	$c->render(template => 'tt');
+  my $c = shift;
+  $c->render(template => 'tt');
 
-	};
+  };
 
 get '/zjbl/:bxlx/:zjq' => sub {
-		my $c = shift;
-		my $bx = $c->param('bxlx');
-		my $zjq = $c->param('zjq');
-		my $bl = query_bl($bx,$zjq);
-		$c->render( json => $bl);
+    my $c = shift;
+    my $bx = $c->param('bxlx');
+    my $zjq = $c->param('zjq');
+    my $bl = query_bl($bx,$zjq);
+    $c->render( json => $bl);
 };
 sub query_bl {
-	my ($bxlx,$zjq) = @_;
-	my $stmt = sprintf("SELECT dwbl,grbl FROM %s.Jfbl WHERE '%s'>=sj1 and '%s'<=sj2 ",$bxlx,$zjq,$zjq);
-	my $sth = $dbh->prepare($stmt);
-	$sth->execute() or die $DBI::errstr;
-	my $row_ref = $sth->fetchrow_hashref() ;
+  my ($bxlx,$zjq) = @_;
+  my $stmt = sprintf("SELECT dwbl,grbl FROM %s.Jfbl WHERE '%s'>=sj1 and '%s'<=sj2 ",$bxlx,$zjq,$zjq);
+  my $sth = $dbh->prepare($stmt);
+  $sth->execute() or die $DBI::errstr;
+  my $row_ref = $sth->fetchrow_hashref() ;
 
 
-	}
+  }
 
 sub query_dwbm {
-	my $dwbm = shift;
-	my $stmt = qq{ SELECT * FROM DW.dwfl WHERE dwbm=?};
-	my $sth = $dbh->prepare($stmt);
-	$sth->execute(qq{$dwbm}) or die $DBI::errstr;
-	my $row_ref = $sth->fetchrow_hashref() ;
+  my $dwbm = shift;
+  my $stmt = qq{ SELECT * FROM DW.dwfl WHERE dwbm=?};
+  my $sth = $dbh->prepare($stmt);
+  $sth->execute(qq{$dwbm}) or die $DBI::errstr;
+  my $row_ref = $sth->fetchrow_hashref() ;
 
 
-	}
+  }
   sub query_zjmx {
       my ($key,$val,$zjq,$bxlx) = @_;
 =pod
@@ -689,16 +691,16 @@ sub query_dwbm {
       my %hash ;
       if ($arr && ($rv>0)) {
       %hash = (
-  				total => $rv,
-  				rows => $arr,
+          total => $rv,
+          rows => $arr,
 
       );
-  	} else {
-  		%hash = (
-  					total => 0,
-  					rows => [],
-  		);}
-  	return  \%hash;
+    } else {
+      %hash = (
+            total => 0,
+            rows => [],
+      );}
+    return  \%hash;
      }
 
 sub queryInfo {
@@ -725,16 +727,16 @@ sub queryInfo {
     my %hash ;
     if ($arr && ($rv>0)) {
     %hash = (
-				total => $rv,
-				rows => $arr,
+        total => $rv,
+        rows => $arr,
 
     );
-	} else {
-		%hash = (
-					total => 0,
-					rows => [],
-		);}
-	return  \%hash;
+  } else {
+    %hash = (
+          total => 0,
+          rows => [],
+    );}
+  return  \%hash;
    }
 
 
@@ -758,7 +760,7 @@ post '/query_zjmx' => sub {
 sub queryZjmx {
   my ($kk,$vv) = @_;
   my $hr = {
-			  id => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM Zjmx WHERE id=?},
+        id => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM Zjmx WHERE id=?},
               dwbm => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM Zjmx WHERE dwbm=? },
               zjq => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM Zjmx WHERE zjq = ? },
               dwxz => qq{SELECT scbh, sfzh, xm, xb,  dwbm, gzsj, zzflbz FROM Zgxx WHERE scbh = ?},
@@ -782,22 +784,22 @@ sub queryZjmx {
     my %hash ;
     if ($arr && ($rv>0)) {
     %hash = (
-				total => $rv,
-				rows => $arr,
+        total => $rv,
+        rows => $arr,
 
     );
-	} else {
-		%hash = (
-					total => 0,
-					rows => [],
-		);}
-	return  \%hash;
+  } else {
+    %hash = (
+          total => 0,
+          rows => [],
+    );}
+  return  \%hash;
   } 
 
    sub query_zjid {
   my ($kk,$vv) = @_;
   my $hr = {
-			  A01 => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM A01.Zjmx WHERE id=?},
+        A01 => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM A01.Zjmx WHERE id=?},
         A02 => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM A02.Zjmx WHERE id=?},
         A03 => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM A03.Zjmx WHERE id=?},
         A04 => qq{SELECT id, dwbm, zjq, dyyzrs, dwjs, grjs, dwdy, grdy,dwbz,grbz,dwsz,grsz,dzsj FROM A04.Zjmx WHERE id=?},
@@ -812,24 +814,24 @@ sub queryZjmx {
               $sth->execute(qq{$vv}) or die $DBI::errstr;
   #my $arr = $sth->fetchall_hashref();
   #my $hash_ref = $sth->fetchall_hashref();
-	my $row_ref = $sth->fetchrow_hashref() ;
+  my $row_ref = $sth->fetchrow_hashref() ;
 
-	return  $row_ref;
+  return  $row_ref;
    }
 
 =pod
    sub res_hr{
-	    while ( my $row_ref = $sth->fetchrow_hashref() ) {
+      while ( my $row_ref = $sth->fetchrow_hashref() ) {
              return $row_ref;
         }
     }
 
     my $do = {
-			id => \&res_hr,
-			dwbm => \&res_jsn,
+      id => \&res_hr,
+      dwbm => \&res_jsn,
 
-		};
-		$do->{$kk}();
+    };
+    $do->{$kk}();
 =cut
 
 
