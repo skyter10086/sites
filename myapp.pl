@@ -607,11 +607,11 @@ get '/get_tree' => sub {
 		{
 			text => "征集数据",
 			children => [
-				{   text => "单位数据",
-					attributes => {url => '/frame/zjdwsj'},
+				{   text => "数据上传",
+					attributes => {url => '/upload_file'},
 				},
-				{   text => "个人数据",
-					attributes => {url => '/frame/zjgrsj'},
+				{   text => "征集单查询及打印",
+					attributes => {url => '/test_looptab'},
 				},
 			],
 		},
