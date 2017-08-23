@@ -137,7 +137,7 @@ sub trans_code {
     $mydata =~ s/'//mg;
     $mydata =~ s/"//mg;
     $mydata =~ s/[^\S\r\n]+//mg; # 清除 非空字符、换行符号以外的字符 ~~ 非换行空白符号
-    print $mydata,"\n";
+    #print $mydata,"\n";
   #print Dumper($mydata);
   return $mydata; # =～ 不是赋值语句，不写return 就变成了1
 }
