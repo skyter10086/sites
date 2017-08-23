@@ -216,7 +216,7 @@ $('#btn_UpZjmx').click(function(){
 $('#btn_UpJfmx').click(function(){
 	//hide_btn();
 	if($('#btn_send').is(":hidden")){
-		file_selector = $(this).prop('id');
+		file_selector = '#jfmx';
 		uploadFile('#jfmx','csv',2000,'fake_upfile',p_show_data_jfmx);
 	}else{
 		$.messager.alert('注意!','请先把上次的数据上传或清空！');
