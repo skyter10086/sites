@@ -142,13 +142,13 @@ sub trans_code {
 
 sub out_aoh_json{
   my $ref_data = shift;
-  print Dumper($ref_data), "\n";
+  #print Dumper($ref_data), "\n";
   open my $fh1, "<", $ref_data;
   my $csv = Text::CSV_XS->new ({ binary => 1, auto_diag => 1 });
   	my ($i,@arr);
     $csv->header($fh1);
   	while (my $row = $csv->getline_hr($fh1)) {
-      print Dumper($row),"\n";
+      #print Dumper($row),"\n";
       push @arr,$row  ;
   	#next if grep /dwbm/ ,@$row ;
   	#$sth->execute(@{$row} ) or  die " Can't execute the statement which $i record of $flag :  $DBI::errstr";
@@ -528,7 +528,9 @@ post '/query_zjd' => sub {
     my $z = $c->param('zjq');
     my $b = $c->param('bxlx');
     #my $z = queryInfo($k,$v);
-    $c->render(json => query_zjmx($k,$v,$z,$b));
+
+    return $c->render(json => {total => 0, rows => []}) unless ($k || $v || $z || $b);
+    return $c->render(json => query_zjmx($k,$v,$z,$b));
     #$c->stash(frameworks => queryInfo($k,$v));
     #$c->render(template => 'datag');
     #$c->stash(description => 'web framework');
@@ -775,7 +777,7 @@ sub queryZjmx {
    my $arr = [];
     while ( my $row_ref = $sth->fetchrow_hashref() ) {
     push @$arr , $row_ref;
-}
+    }
     my $rv = $sth->rows;
     my %hash ;
     if ($arr && ($rv>0)) {
@@ -790,7 +792,7 @@ sub queryZjmx {
 					rows => [],
 		);}
 	return  \%hash;
-   }
+  } 
 
    sub query_zjid {
   my ($kk,$vv) = @_;
