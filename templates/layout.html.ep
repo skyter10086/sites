@@ -123,8 +123,9 @@
 
             //处理树型菜单点击事件
             $("#tt").tree({
-              data: tree_data,
-              //method: 'GET',
+             // data: tree_data,
+              method: 'GET',
+              url: '/get_tree',
               animate: true,
               lines: true,
               onClick: function (node) {
