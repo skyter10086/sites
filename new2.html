@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/easyui//themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+	<script type="text/javascript" src="/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/qrcodejs-master/qrcode.js"></script>
+<script  type="text/JavaScript" src="/Jqprint/jQuery.print.js" ></script>
+<title>laysout</title>
+</head>
+<body>
+	
+    <div id= "upload" align="center">
+    <h2>征集数据上传</h2>
+    
+    <div style="margin:20px 0;"></div>
+    <div class="easyui-panel" title="Upload File" style="width:100%;max-width:800px;padding:30px 60px;">
+ 
+        
+    <div style="margin:20px">
+		<label><input type="radio" value="A01"  name="selected" />养老保险</label>
+		<label><input type="radio" value="A02"  name="selected" />工伤保险</label>
+		<label><input type="radio" value="A03"  name="selected" />失业保险</label>
+		<label><input type="radio" value="A04"  name="selected" />医疗保险</label>
+		<label><input type="radio" value="A05"  name="selected" />生育保险</label>
+		<div style="margin:10px 0;"></div>
+	
+
+        <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="f1" name="zjmx" required="true" label="单位征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a href="javascript:void(0)" class="easyui-linkbutton"  style="width:20%">上传</a>
+        </div>
+
+        <div style="margin-bottom:20px">
+            <input class="easyui-filebox" id="f2" name="jfmx" required="true" label="个人征集明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="" style="width:20%">上传</a>
+        </div>
+
+        <div style="margin-bottom:40px">
+            <input class="easyui-filebox" id="f3" name="bjmx"  required="true" label="补征明细:" labelPosition="top" data-options="prompt:'选择相应的CSV数据文件...',buttonText: '文件浏览'" style="width:60%">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="" style="width:20%">上传</a>
+        </div>
+        
+    </div>
+    </div>
+    </div>
+<script>
+
+			
+			
+			
+			
+			
+function valid_filerequired(file_id,sizeMax){
+	if ($(file_id).filebox('getText')){
+		var f = $(file_id).next().find(':file').get(0).files[0];
+		fileSize=Math.round(f.size/1024*100)/100;
+		if (fileSize == 0) {
+			$(file_id).filebox('clear');
+			$.messager.alert('注意','文件大小为空！');
+		}else if (fileSize >= sizeMax){
+			$(file_id).filebox('clear');
+			$.messager.alert('注意','文件太大！');
+		}else{
+				
+		}
+	}
+}
+			
+    
+function valid_bxlx(bxlx_id){
+	if ($(bxlx_id).combobox('getValue') == ''){
+		$(bxlx_id).combobox('clear');
+	}
+}
+
+function valid_filext(fileid,pattern){
+	if ($(fileid).filebox('getText')){
+		var filename = $(fileid).filebox('getText');
+				//alert(filename);
+		var re =new RegExp("\." + pattern + "$","gi")
+		if (!re.test(filename)){
+			$(fileid).filebox('clear');
+		}
+	}
+}  
+                     
+$(function(){
+});
+			
+function uploadFile_1(f_id){
+	var bxlx = $("[name='selected'][checked=true]").val();
+	var type = $(f_id).attr('name');		
+	if (!bxlx) {
+		$.messager.alert("注意","请选择险种类型！");
+	} else {
+		valid_filext(f_id,'csv');
+		valid_filerequired(f_id,500);
+		if ($(f_id).filebox('getText')){
+			var f = $(file_id).next().find(':file').get(0).files[0];
+			var fm = new FormData();
+			fm.append('file',f);
+			fm.append('bxlx',bxlx);
+			fm.append('type',type);
+			$.ajax({
+				url: 'upfile',
+				type: 'POST',
+				data: fm,
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					alert(result);
+			    }
+             });
+		}
+	}	
+}
+
+
+
+			
+</script>
+<script  type="text/JavaScript" src="../get_json.js" ></script>
+<script  type="text/JavaScript" src="../chineseStr.js" ></script>
+<script  type="text/JavaScript" src="../field_fill.js" ></script>
+
+</body>
+</html>

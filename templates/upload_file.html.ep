@@ -100,7 +100,6 @@ cols_zjmx = [[
 	{field:'grdy',title:'个人缴纳',width:60,align:'right'},
 	{field:'dwbz',title:'单位补征',width:50,align:'right'},
 	{field:'grbz',title:'个人补征',width:50,align:'right'},
-	{field:'grbz',title:'个人补征',width:50,align:'right'},
 	{field:'dwsz',title:'单位实征',width:50,align:'right'},
 	{field:'grsz',title:'个人实征',width:50,align:'right'},
 	{field:'dzsj',title:'到帐时间',width:60,align:'center'}

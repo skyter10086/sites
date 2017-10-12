@@ -3,11 +3,13 @@ use Mojolicious::Lite;
 use DBI;
 use strict;
 #use utf8::all;
+use DateTime;
 use Mojo::JSON qw(decode_json encode_json);
 use Data::Dumper;
 use Text::CSV_XS;
 use Encode;
 use Data::Dumper qw(Dumper);
+use GD::SecurityImage;
 
 
       my $dbh = DBI->connect("dbi:SQLite::memory:","","",{sqlite_unicode =>1, AutoCommit => 1, RaiseError => 1})
@@ -137,7 +139,7 @@ sub trans_code {
     $mydata =~ s/'//mg;
     $mydata =~ s/"//mg;
     $mydata =~ s/[^\S\r\n]+//mg; # 清除 非空字符、换行符号以外的字符 ~~ 非换行空白符号
-    #print $mydata,"\n";
+    print $mydata,"\n";
   #print Dumper($mydata);
   return $mydata; # =～ 不是赋值语句，不写return 就变成了1
 }
@@ -241,6 +243,26 @@ post 'fake_upfile' => sub {
     $c->render(json =>  $result);
 
 };
+get '/capcha' => sub {
+    my $c = shift;
+
+my $your_random_str = '1234'; #至少是6位否则随机6位数字
+# Create a normal image
+my $image = GD::SecurityImage->new(
+               width   => 80,
+               height  => 32,
+               lines   => 5,
+               gd_font => 'giant',
+            );
+   $image->random( $your_random_str );
+   $image->create('normal','box', '#80C0F0', '#0F644B');
+my($image_data, $mime_type, $random_number) = $image->out;
+$c->session('key' => $random_number);
+#$c->session(expires => -1);
+$c->res->headers->cache_control('no-cache');
+return $c->render(data => $image_data);
+
+};
 
 post 'upfile' => sub {
   my $c = shift;
@@ -265,10 +287,21 @@ post 'upfile' => sub {
 
 };
 
+get 'jump_login' => sub {
+  my $c = shift;
+  $c->render(template => 'jump_login');
+};
 
 get 'upload_file' => sub {
     my $c = shift;
-    $c->render(template => 'upload_file');
+
+    if ($c->session->{usr}){
+      #$c->res->headers->cache_control('no-cache');
+      $c->render(template => 'upload_file');
+    } else {
+      $c->redirect_to('jump_login');
+    }
+    #$c->render(template => 'upload_file');
 
 
 };
@@ -452,6 +485,7 @@ sub list_dwfl {
     }
 
 
+
 get '/search' => sub {
     my $c = shift;
     #$c->render(json => queryZjmx($k,$v));
@@ -542,9 +576,65 @@ post '/query_zjd' => sub {
 
 };
 
+post '/login' => sub {
+  my $c = shift;
+
+  my $usr = $c->param('username');
+  my $pwd = $c->param('passwd');
+  my $code = $c->param('code_key');
+  my $signed_key = $c->session->{'key'};
+  if ($code eq $signed_key){
+    my $rt = {success => '1',
+             url => '/',
+             message => '你已成功登录，正在跳转首页......'
+  };
+  $c->session({usr => $usr});
+  $c->render(json => $rt);
+} else {
+  my $rt = {success => '0',
+           url => '/login',
+           message => '登录失败，请重新输入！'
+  };
+  $c->render(json => $rt);
+}
+=pod
+  my $strs = "user: $usr \n \
+              pwd: $pwd \n \
+              code: $code \n \
+              signed_key: $signed_key \n  \
+              ";
+=cut
+  #$c->session->cookie_name($usr);
+  #$c->session(expiration => 604800);
+
+  #$c->render(text => $strs);
+
+};
+
+get '/logout' => sub {
+  my $c = shift;
+  $c->session(expires => 1);
+  my $now = DateTime->now();
+  my $url = "/?time=$now";
+  $c->redirect_to($url);
+};
+get '/login' => sub {
+    my $c = shift;
+    my $codec = $c->session->{'key'};
+    print "session_code : $codec \n";
+    #$c->stash(key => $codec);
+    return $c->render(template => 'login');
+};
+
 get '/' => sub {
     my $c = shift;
-    $c->render(template => 'layout');
+    if ($c->session->{usr}){
+      #$c->res->headers->cache_control('no-cache');
+      $c->render(template => 'layout');
+    } else {
+      $c->redirect_to('/login');
+    }
+
 };
 get '/block_search' => sub{
   my $c = shift;
@@ -794,7 +884,7 @@ sub queryZjmx {
           rows => [],
     );}
   return  \%hash;
-  } 
+  }
 
    sub query_zjid {
   my ($kk,$vv) = @_;
@@ -835,6 +925,6 @@ sub queryZjmx {
 =cut
 
 
-
+app->secrets(['My secret passphrase here']);
 
 app->start;

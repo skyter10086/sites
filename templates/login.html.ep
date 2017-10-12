@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache,no-store, must-revalidate">
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="expires" CONTENT="0">
+  <!-- 引用的css -->
+  <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+  <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+  <link rel="stylesheet" type="text/css" href="/easyui/demo/demo.css">
+  <link rel="stylesheet" type="text/css" href="styles/index.css"  >
+  <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+  <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+
+
+
+
+
+  <title>系统首页</title>
+</head>
+<script type="text/javascript">
+console.info("==================")
+  $('#p').panel('move',{
+    left:100,
+    top:100
+  });
+</script>
+<body>
+  <font style="color:red;">
+
+  </font>
+  <div id="header" >
+    <div class="logo" onclick="window.location.href='/'">
+      <div align="center">
+      <strong>河南油田社保中心征集信息系统</strong>
+    </div>
+    </div>
+  </div>
+  <div id="picture" style="background:url(images/index.jpg) no-repeat; background-size: cover;">
+  <div data-options=" region:'east',split:true,style:{position:'relative',left:850,top:150}"
+ class="easyui-panel " title="用户登录" style="width:320px;text-align: center;">
+      <div style="padding:10px 60px 15px 60px">
+        <form id="ff" class="easyui-form" method="post" data-options="novalidate:true" >
+          <table cellpadding="5">
+            <tr>
+              <td><input id="usr" name="username" class="easyui-textbox" data-options="prompt:'账号',validType:'name'" iconCls="icon-man" iconAlign=left style="width:100%;height:32px"/></td>
+            </tr>
+            <tr>
+              <td><input id="pwd" name="passwd" class="easyui-passwordbox" data-options="prompt:'密码',validType:'password'" iconCls="icon-lock" iconAlign=left style="width:100%;height:32px"></input></td>
+            </tr>
+
+            <tr>
+              <td><input id="code" name="code_key" class="easyui-textbox" data-options="prompt:'验证码',validType:'validate'" iconCls="icon-filter" iconAlign=left style="width:55%;height:32px" />
+              <img id="code_img" src="/capcha" alt="" width="56" height="32" align='absMiddle' /> </td>
+            </tr>
+
+          </table>
+        </form>
+        <div style="text-align:center;padding:5px; ">
+          <a href="javascript:void(0);"  rel="external nofollow" rel="external nofollow" class="easyui-linkbutton" style="width:45%;height:32px" onclick="submitForm()">登录</a>
+          <a href="javascript:void(0);" rel="external nofollow" rel="external nofollow" class="easyui-linkbutton" style="width:45%;height:32px" onclick="clearForm()">重置</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="bootom">
+    <div id="bootom_content">
+      <p><strong>联系我们</strong></p>
+      <p>
+        地址：河南省南阳市宛城区官庄镇五一路    邮箱：473132</p>
+      <p>     Copyright © 2017 - 2018    skyter10086@aliyun.com 版权所有
+      </p>
+      <p>
+        建议使用IE8以上版本浏览器    E-mail：skyter10086@aliyun.com
+      </p>
+    </div>
+  </div>
+</body>
+<script>
+  function submitForm(){
+    $('#ff').form('submit',{
+      url: '/login',
+      success: function(data){
+        let result = JSON.parse(data);
+        //$.messager.alert("提示",result.message);
+        alert(result.message);
+        var timestamp = new Date().getTime();
+        var url_str = result.url ; //+ '?' + timestamp;
+          window.location.href=url_str ;
+
+
+      }
+    });
+  }
+  function clearForm(){
+    $('#ff').form('clear');
+    var timestamp = new Date().getTime();
+    $('#code_img').attr('src',$('#code_img').attr('src')+ '?' +timestamp );
+
+  }
+
+  $(function(){
+    //window.history.back(-2);
+  });
+</script>
+</html>

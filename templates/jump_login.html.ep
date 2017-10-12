@@ -1,0 +1,8 @@
+ <!DOCTYPE html>
+ <html>
+  <body>
+
+    <script language="javascript">alert("你无权访问这个页面...");window.top.location.href="../login";</script>
+    </script>
+  </body>
+ </html>
