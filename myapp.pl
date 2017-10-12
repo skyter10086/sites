@@ -620,8 +620,7 @@ get '/logout' => sub {
 };
 get '/login' => sub {
     my $c = shift;
-    my $codec = $c->session->{'key'};
-    print "session_code : $codec \n";
+    #print "session_code : $codec \n"  if my $codec = $c->session->{'key'};
     #$c->stash(key => $codec);
     return $c->render(template => 'login');
 };
